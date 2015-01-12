@@ -56,9 +56,6 @@
   
   
   <!--  Spring Security -->
-  
-   
-  
   <!--         Spring Configurations       -->
 	    <dependency>
 	      <groupId>org.springframework</groupId>
