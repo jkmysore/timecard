@@ -1,0 +1,16 @@
+
+Hai <b> ${user.firstName} ${user.lastName},</b> <br />
+ welcome to  <b>Gracular!</b>
+
+
+<p>   Congratulations, Your Account has been created.
+   Please click on the below link to activate your account.
+    http://gracular.com/activateuser.do?token=${user.accountToken}. </p>
+   
+ <br />
+ <br />
+ <br />
+ <br />  
+ 
+  Regards,<br />
+  Team Gracular. 

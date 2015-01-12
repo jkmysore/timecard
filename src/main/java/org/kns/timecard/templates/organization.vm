@@ -1,0 +1,16 @@
+
+Hai <b> ${organization.organizationName},</b> <br />
+ welcome to  <b>Time Card!</b>
+
+
+<p>   Congratulations, Your Account has been created, please find your credentials below </p>
+   
+   <p> Username : ${organization.siteAdmin.username} </p>
+   <p> Password : ${organization.siteAdmin.password} </p>
+ <br />
+ <br />
+ <br />
+ <br />  
+ 
+ Regards,<br />
+ KNS Technologies 

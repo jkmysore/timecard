@@ -1,0 +1,25 @@
+
+LoginController:
+
+  login.htm                   (no Filter)
+  loginsuccess.htm
+  logout.htm
+  home.htm             
+  forgetpassword.htm          (No Filter)
+  resetpassword.htm            (No Filter)
+ 
+ 
+ Registration Controller:
+   changepassword.htm       (All Login users)
+   
+   
+  
+  
+  
+ OrganizationController:
+ 		
+ 	/organization/add.htm      (Only Admin)
+ 	
+ 	
+ 	
+ 	

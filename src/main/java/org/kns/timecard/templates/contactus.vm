@@ -1,0 +1,16 @@
+
+Sender Name  : ${user}      <br />
+Sender Email : ${email}     <br/>
+
+Content:
+
+<p>
+	${content}
+</p>
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+.title{
+	font-size: 1.3em;
+	color: #E98506;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.header{
+	text-align: center;
+	font-family: serif;
+	font-size: 1.5em;
+	color: #1182DB;
+}
+
+.error_msg{
+	font-size: 0.9em;
+	color: red;
+}
+
+.org_error{
+	
+	color:#f00;
+}
+
+.titleHeader{
+	text-align: center;
+	font-family: verdana;
+	font-size: 1.8em;
+	color: #1182DB;
+	padding-top: 20px;
+	padding-bottom:10px;
+	text-decoration: underline;	
+}
