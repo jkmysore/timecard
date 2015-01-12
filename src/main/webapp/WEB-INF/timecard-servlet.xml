@@ -37,6 +37,8 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
+	<!-- <bean class="org.springframework.web.servlet.view.XmlViewResolver"
+	p:location="/WEB-INF/spring-excel-views.xml" p:order="1" /> -->
 	
 
 </beans>

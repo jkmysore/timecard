@@ -40,7 +40,7 @@
 			                 <label style="margin-top: 10px;font-size: 12px;">Confirm Password :</label> <span id="cpassword_error" class="error_msg"></span>	                   
 			                    <input type="password" class="form-control" placeholder="Confirm Password" name="cpassword" id="cpassword" style="margin-top: 0px;width: 95%;" />
 			                 
-			                 	<input type="hidden" name="userId" value="${userId }"> 
+			                 	<input type="hidden" name="userCredentialId" value="${userCredentialId }"> 
 			                    
 			                 
 			                    <button class="btn btn-success btn-block" type="submit">Reset Password</button>

@@ -5,8 +5,8 @@ Hai <b> ${organization.organizationName},</b> <br />
 
 <p>   Congratulations, Your Account has been created, please find your credentials below </p>
    
-   <p> Username : ${organization.siteAdmin.username} </p>
-   <p> Password : ${organization.siteAdmin.password} </p>
+   <p> Username : ${organization.siteAdmin.timeCardCredentials.username} </p>
+   <p> Password : ${organization.siteAdmin.timeCardCredentials.password} </p>
  <br />
  <br />
  <br />

@@ -4,11 +4,11 @@
  * Created by Jeevan on June 25, 2014
  */
 
-$(document).ready(function(){
+/*$(document).ready(function(){
 	
 	
 });
-
+*/
 
 /*
  * Method to validate if Email Exists
@@ -112,5 +112,95 @@ var result=true;
 			return false;
 		}		
 	}
-
-
+	
+	/* added by bhagya on july 07th,2014
+	 * Validation the login.jsp form using jquery
+	 */
+	
+	function validateLogin(){
+		var uname=$('#uname').val();
+		var pass=$('#pwd').val();
+		var l=true;
+		var m=true;
+			if(uname===""||uname===null){
+				$('#userId').text("* Username Cannot Be Empty");
+				l=false;
+			}
+			
+			else{
+				$('#userId').text("");
+				l=true;
+			}	
+		
+			if(pass==="" || pass===null){
+				$('#passwd').text("* Password Cannot Be Empty");
+				m=false;
+			}
+			
+			else{
+				$('#passwd').text("");
+				m=true;
+			}
+	
+		if(l===true && m===true){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+		
+		/*
+		 * Added By Bhagya on October 21st,2014
+		 * Method for Validate the Change Password Page
+		 */
+		
+	function validateChangePassword(){
+		var pwd=$('#oldPassword').val();
+		var newpwd=$('#newPassword').val();
+		var cpwd=$('#confirmPassword').val();
+		var a,b,c=true;
+		if(pwd.trim().length<1){
+			
+			$('#oldPassword_error').html('* Please Enter Old Password');
+			a=false;
+		}
+		else if(pwd.trim().length<8 || pwd.trim().lenght>20){
+			$('#oldPassword_error').html('* Password Should have atleast 8 characters and maximum 20 characters');
+			a=false;
+		}
+		else{
+			$('#oldPassword_error').html('');
+			a=true;
+		}
+		if(newpwd.trim().length<1){
+			
+			$('#newPassword_error').html('* Please Enter New Password');
+			b=false;
+		}
+		else if(newpwd.trim().length<8 || newpwd.trim().lenght>20){
+			$('#newPassword_error').html('* Password Should have atleast 8 characters and maximum 20 characters');
+			b=false;
+		}
+		else{
+			$('#newPassword_error').html('');
+			b=true;
+		}
+		if(newpwd!=cpwd){
+			$('#confirmPassword_error').html('* New Password and Confirm Password Should Match');
+			c=false;
+		}
+		else{			
+			$('#confirmPassword_error').html('');			
+			c=true;
+		}	
+		if(a==true && b==true && c==true){
+			return true;
+			
+		}
+		else{
+			return false;
+		}
+	}
+			 
+		

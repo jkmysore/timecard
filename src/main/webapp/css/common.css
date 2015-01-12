@@ -31,3 +31,91 @@
 	padding-bottom:10px;
 	text-decoration: underline;	
 }
+
+
+
+/* Pagination *//* added by bhagya on august 11th,2014 */
+
+
+		.pagination {
+			overflow: auto;
+			margin: 40px 0 10px 0;
+			text-align: center;	
+		}
+		
+		
+		.pagination ul {
+			display:inline-table;
+			
+			
+		}
+
+		 .pagin {
+				overflow: auto;				
+			}
+			
+			
+			
+			.pagin li {
+				float: left;
+				padding:4px 4px 2px 0px !important;
+				display:inline;
+				
+			}
+			
+			.pagin li a {
+				display: block;
+				text-decoration: none;
+				color: #717171;
+				font: bold 13px Arial, sans-serif;
+				text-shadow: 0px 1px white;
+				padding: 5px 8px;
+				border:1px solid #ccc;		
+			
+				
+			}
+			
+			.pagin li a.current {
+				color: white;
+				text-shadow: 0px 1px #3f789f;
+				background: #7cb9e5;
+				background: -webkit-linear-gradient(top, #7cb9e5 0%, #57a1d8 100%);
+				background: -moz-linear-gradient(top, #7cb9e5 0%, #57a1d8 100%);
+				background: -o-linear-gradient(top, #7cb9e5 0%, #57a1d8 100%);
+				background: -ms-linear-gradient(top, #7cb9e5 0%, #57a1d8 100%);
+				background: linear-gradient(top, #7cb9e5 0%, #57a1d8 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7cb9e5', endColorstr='#57a1d8',GradientType=0 );
+			}
+			
+			.pagin li a:hover {
+				-webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.55);
+				-moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.55);
+				box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.55);
+				background: #fff;
+			
+				background: -webkit-linear-gradient(top, #fff 0%, #e8e8e8 100%);
+				background: -moz-linear-gradient(top, #fff 0%, #e8e8e8 100%);
+				background: -o-linear-gradient(top, #fff 0%, #e8e8e8 100%);
+				background: -ms-linear-gradient(top, #fff 0%, #e8e8e8 100%);
+				background: linear-gradient(top, #fff 0%, #e8e8e8 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#e8e8e8',GradientType=0 );
+			}
+			
+			.pagin li a:active,#pagin li a.current:active {
+				
+			}
+			
+			.pagin li a.current:hover {
+				-webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
+				-moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
+				box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.9);
+				background: #99cefc;
+			
+				background: -webkit-linear-gradient(top, #99cefc 0%, #57a1d8 100%);
+				background: -moz-linear-gradient(top, #99cefc 0%, #57a1d8 100%);
+				background: -o-linear-gradient(top, #99cefc 0%, #57a1d8 100%);
+				background: -ms-linear-gradient(top, #99cefc 0%, #57a1d8 100%);
+				background: linear-gradient(top, #99cefc 0%, #57a1d8 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99cefc', endColorstr='#57a1d8',GradientType=0 );
+			}
+				        

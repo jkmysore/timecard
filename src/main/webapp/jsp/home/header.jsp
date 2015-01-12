@@ -1,15 +1,15 @@
  <div class="headerbar">	      
 	      <a class="menutoggle"><i class="fa fa-bars"></i></a>	      
-	      <form class="searchform" action="http://themepixels.com/demo/webpage/bracket/index.html" method="post">
+	     <!--  <form class="searchform" action="http://themepixels.com/demo/webpage/bracket/index.html" method="post">
 	        <input type="text" class="form-control" name="keyword" placeholder="Search here..." />
-	      </form>	
+	      </form> -->	
 	            
 	      <div class="header-right">
 	        <ul class="headermenu">          
 	          <li>
 	            <div class="btn-group">
-	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                <img src="/profile/${sessionScope.userId}/${sessionScope.profilePic}" alt="" />
+	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width:50;height:25">
+	                <img src="/profile/${sessionScope.userId}/${sessionScope.profilePic}" alt=""  />
 	               ${sessionScope.user_name }
 	                <span class="caret"></span>
 	              </button>

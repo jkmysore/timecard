@@ -34,6 +34,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	 * Adds User and Role to Session on Successful Login	 * 
 	 */
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
 			HttpServletResponse response, Authentication authentication)

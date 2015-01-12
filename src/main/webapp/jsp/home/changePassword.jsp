@@ -54,7 +54,7 @@
       <div class="row">
         
         <div class="col-md-11">
-          <form:form class="form-horizontal" action="${pageContext.request.contextPath}/changepassword.htm" method="post" id="basicForm" novalidate="novalidate"  enctype="multipart/form-data" commandName="changePassword" onsubmit="return validateOrganization();">
+          <form:form class="form-horizontal" action="${pageContext.request.contextPath}/changepassword.htm" method="post" id="basicForm" novalidate="novalidate"  enctype="multipart/form-data" commandName="changePassword" onsubmit="return validateChangePassword();">
 	          <div class="panel panel-default">
 	               <div class="titleHeader">Change Password</div>
 	               <div class="title" style="color: #636e7b;">

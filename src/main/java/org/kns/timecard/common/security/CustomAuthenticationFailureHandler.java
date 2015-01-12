@@ -28,7 +28,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		
 		super.onAuthenticationFailure(request, response, exception);
 		String message;
-		System.out.println("EXCEption "+exception.getMessage()+" "+exception.getClass());
+		System.out.println("Exception "+exception.getMessage()+" "+exception.getClass());
 		if(exception.getClass().isAssignableFrom(CredentialsExpiredException.class)){
 			message="Your Account is Expired, Please Contact Admin for further Details";
 		}		
@@ -40,10 +40,8 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		}
 		else{
 			message="Invalid Login Credentials";
-		}
-		
-        request.getSession().setAttribute("error", message );      
-		
+		}		
+		request.getSession().setAttribute("error", message );       		
 	}
 	
 	

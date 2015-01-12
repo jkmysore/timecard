@@ -28,22 +28,36 @@
 	
 		<sec:http auto-config="true" >
 			
-			<sec:form-login login-page="/login.jsp" default-target-url="/loginsuccess.htm" authentication-failure-handler-ref="customAuthenticationFailureHandler" always-use-default-target="false" 
+			<sec:form-login login-page="/login.htm" default-target-url="/loginsuccess.htm" authentication-failure-handler-ref="customAuthenticationFailureHandler" always-use-default-target="false" 
 			    authentication-success-handler-ref="loginSuccess" />
 			    
 	        <sec:logout invalidate-session="true" logout-success-url="/logoutsuccess.htm" logout-url="/logout.htm" />        
-	        <sec:remember-me key="timecard_key" token-validity-seconds="864000"/>   
+	        <sec:remember-me key="timecard_key" token-validity-seconds="864000" authentication-success-handler-ref="rememberSuccess" />   
 	        <sec:session-management   session-authentication-error-url="/401.htm"  />
 	        <sec:access-denied-handler error-page="/accessDenied.jsp"/>
 	        
-	       <sec:intercept-url pattern="/*.htm" access="ROLE_ANONYMOUS,ROLE_SITE_ADMIN"/>
-	        
+	       <sec:intercept-url pattern="/login.htm" access="ROLE_ANONYMOUS"/>
+	        <sec:intercept-url pattern="/logoutsuccess.htm" access="ROLE_ANONYMOUS"/>
+	         <sec:intercept-url pattern="/forgetpassword.htm" access="ROLE_ANONYMOUS"/>
+	         <sec:intercept-url pattern="/404.htm" access="ROLE_ANONYMOUS"/>
+	         <sec:intercept-url pattern="/401.htm" access="ROLE_ANONYMOUS"/>
+	          <sec:intercept-url pattern="/403.htm" access="ROLE_ANONYMOUS"/>
+	         <sec:intercept-url pattern="/405.htm" access="ROLE_ANONYMOUS"/>	
+	          <sec:intercept-url pattern="/ resetpassword.htm" access="ROLE_ANONYMOUS"/>	
+	                        
+	          <sec:intercept-url pattern="/*.htm" access="ROLE_EMPLOYEE"/>  
+	          <sec:intercept-url pattern="/organization/*.htm" access="ROLE_SITE_ADMIN"/>  
+	          
+	          	                 
 		</sec:http>
 			
 	
 		<bean id="loginSuccess"
 		    class="org.kns.timecard.common.security.LoginSuccessHandler">
 		</bean>
+		
+		<bean id="rememberSuccess"
+			class="org.kns.timecard.common.security.RememberMeAuthenticationSuccessHandler" />
 		
 		<bean id="customAuthenticationFailureHandler"
 	     	 class="org.kns.timecard.common.security.CustomAuthenticationFailureHandler">

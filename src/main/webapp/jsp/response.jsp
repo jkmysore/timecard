@@ -31,7 +31,9 @@
 					   </div>
 			            <div class="col-md-5">
 			                <div class="logopanel">
-			                        <h1 style="text-align:center;"><img src="images/logo.png"></h1>
+			                        <h1 style="text-align:center;">
+			                         <a href="${pageContext.request.contextPath}/home.htm"><img src="images/logo.png"></a>	
+			                        </h1>
 			                 </div>
 			                <form method="post" action="<c:url value='${pageContext.request.contextPath}/forgetpassword.htm' />" onsubmit="return validateForgetPasswordForm();">
 			                    	<div class="title">

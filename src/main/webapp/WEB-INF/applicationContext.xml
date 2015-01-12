@@ -40,6 +40,7 @@
 	
 	
 	 <import resource="security.xml"/>
+	<!--  <import resource="spring-excel-views.xml"/> -->
 	
 	
 	
@@ -124,11 +125,14 @@
 		</property>
 	   </bean>
 	   
-	<bean id="organizationService"
-		class="org.kns.timecard.frontend.timecard.organization.service.OrganizationServiceImpl" >
-		<property name="logoPath"  value="F:/work/timecard/images/org/" />
+	 <bean id="organizationService"
+		class="org.kns.timecard.frontend.organization.organization.service.OrganizationServiceImpl" >
+		<property name="logoPath"  value="F:/Timecard/images/" />
 	</bean>
-		
+		<!-- <bean id="userService"
+		class="org.kns.timecard.frontend.user.service.UserServiceImpl" >
+		<property name="profilePic"  value="F:/TIMECARD/images/" />
+	</bean>  -->
 	
  </beans>
  

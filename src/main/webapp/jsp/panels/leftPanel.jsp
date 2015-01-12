@@ -17,7 +17,7 @@
         </li>
         <li class="nav-parent" id="reports"><a href=""><i class="fa fa-suitcase"></i> <span>Reports</span></a>
           <ul class="children">
-             <li><a href="#"><i class="fa fa-caret-right"></i> Forms1</a></li>
+            <li><a href="#"><i class="fa fa-caret-right"></i> Forms1</a></li>
             <li><a href="#"><i class="fa fa-caret-right"></i> Forms2</a></li>
             <li><a href="#"><i class="fa fa-caret-right"></i> Forms3</a></li>
             <li><a href="#"><i class="fa fa-caret-right"></i> Forms4</a></li>
