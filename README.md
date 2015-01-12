@@ -16,12 +16,16 @@ Context Paths:
 Image Files:
 
 Profile Images     : /timecard_images/profile
+
 Organization Images: /timecard_images/org
+
 Other images       : /timecard_images/others
 
 
 Template / Media Files
+
 /timecard_files/excel
+
 /timecard_files/media..
 
 
