@@ -53,7 +53,21 @@
 		margin-left: 100px;
 	}
 
+	.fa-edit{
+		color:#19938A;
+	}
+	
+	.fa-wrench{
+		color:#376567;
+	}
 
+	.fa-ban{
+		color:#E53C3C;
+	}
+	
+	.fa-check{
+		color:#11C211;
+	}
 
 
 

@@ -76,7 +76,7 @@ public class Organization implements Serializable{
 	@JoinColumn(name="timecard_period")
 	private TimeCardPeriod timeCardPeriod;
 	
-	@OneToOne(cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
+	@OneToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="site_admin")
 	private TimecardUser siteAdmin;
 	

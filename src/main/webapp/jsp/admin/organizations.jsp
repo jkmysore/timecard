@@ -99,7 +99,7 @@
 	             <div class="panel-body table-responsive">
 	             		<form:form
 	             			commandName="displayListBean"
-							method="GET"
+							method="POST"
 							action="${pageContext.request.contextPath }/admin/organizations.htm"
 							class="form-horizontal" 
 							role="form">
@@ -138,6 +138,7 @@
 							               <th> <a href="#" onclick="sortResults('organizationName');" >Organization Name </a></th>
 							               <th><a href="#" onclick="sortResults('organizationShortName');" >Short Name</a></th>
 							               <th>Site Admin</th>
+							               <th><a href="#" onclick="sortResults('isActive');" >Status</a></th>
 							               <th>Logo</th>
 							               <th>Actions</th>								
 						              </tr>
@@ -152,15 +153,34 @@
 						              				<td>${i}</td>
 						              				<td>${org.organizationName}</td>
 						              				<td>${org.organizationShortName }</td>
-						              				<td>${org.siteAdmin.firstName }</td>
+						              				<td>${org.siteAdmin.timeCardCredentials.username }</td>
+						              				<td>
+						              					<c:choose>
+						              						<c:when test="${org.isActive eq true }">
+						              							Active
+						              						</c:when>
+						              						<c:otherwise>
+						              							In Active
+						              						</c:otherwise>						              					
+						              					</c:choose>
+						              				</td>
 						              				<td> <img src="/timecard_images/org/${org.organizationId}/${org.logoPath}" width="28" height="28"/></td>
 						              				
 						              				<td class="menu-action">
-						              					<button type="button" class="btn btn-default" aria-label="Left Align">
-														  <span class="btn menu-icon vd_bg-yellow"></span>
-														</button>
 						              					
-						              				
+														<a href="${pageContext.request.contextPath}/admin/orgsettings.htm" title="Settings">	<i class="fa fa-wrench fa-2x"></i> </a>
+						              					&nbsp;
+						              					
+						              					<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="Edit Organization">	<i class="fa fa-edit fa-2x"></i> </a>
+						              						&nbsp;
+						              					<c:choose>
+						              						<c:when test="${org.isActive eq true }">	
+						              							<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="Activate Organization">	<i class="fa fa-ban fa-2x"></i> </a>	
+						              						</c:when>
+						              						<c:otherwise>
+						              							<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="InActivate Organization">	<i class="fa fa-check fa-2x"></i> </a>	
+						              					    </c:otherwise>
+						              					  </c:choose>
 						              				</td>
 						              				
 						              			</tr>		     

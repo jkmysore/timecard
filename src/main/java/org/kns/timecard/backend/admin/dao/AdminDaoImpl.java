@@ -95,7 +95,7 @@ public class AdminDaoImpl implements AdminDao {
 			criteria.setMaxResults(pageSize);
 		}					
 		organizations=(ArrayList<Organization>) criteria.list();
-		if(!organizations.isEmpty()){
+		if(!organizations.isEmpty()){		
 			organizations.get(0).setTotalOrganizations(totalOrganizations);
 			return organizations;
 		}

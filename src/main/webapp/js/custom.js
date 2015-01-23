@@ -67,7 +67,7 @@ jQuery(document).ready(function() {
       return false;
    });
    
-   // Form Toggles
+   /*// Form Toggles
    jQuery('.toggle').toggles({on: true});
    
    jQuery('.toggle-chat1').toggles({on: false});
@@ -102,7 +102,7 @@ jQuery(document).ready(function() {
 	  height:'30px',
       barColor: '#F0AD4E'
    });
-   
+   */
    
    // Minimize Button in Panels
    jQuery('.minimize').click(function(){

@@ -105,7 +105,8 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 		organization.setCreatedBy(this.userDao.getTimecardUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
 		organization.setCreatedDate(new Date());
 		organization.setSiteAdmin(timecardUser);
-		organization.setLogoPath(organizationDto.getLogo().getOriginalFilename());	
+		organization.setLogoPath(organizationDto.getLogo().getOriginalFilename());
+		organization.setIsActive(true);
 		organization.setIsLogsSaved(true);
 		organization.setIsUserLogsSaved(true);
 		Integer savedResult=this.adminDao.saveorUpdateOrganization(organization);
@@ -137,6 +138,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 		ArrayList<OrganizationDto> organizationDtos=new ArrayList<OrganizationDto>();
 		ArrayList<Organization> organizations=this.adminDao.getAllOrganizations(pageNo, pageSize, searchBy, sortBy, ascending);
 		for(Organization organization:organizations){
+			
 			/*OrganizationDto organizationDto=new OrganizationDto();
 			organizationDto.setOrganizationId(organization.getOrganizationId());
 			organizationDto.setOrganizationName(organization.getOrganizationName());

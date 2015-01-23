@@ -107,12 +107,13 @@ public class SuperAdminController {
 	 * 
 	 *  //USED bean.get() to enable reusability of Service and Dao
 	 */
-	@RequestMapping(value="organizations.htm",method=RequestMethod.GET)
+	@RequestMapping(value="organizations.htm")
 	public String viewOrganizations(@ModelAttribute("displayListBean") DisplayListBeanDto listBeanDto,Map<String, Object> map){
 		log.info("inside viewOrganizations()");
 		try{
 			ArrayList<OrganizationDto> organizationDtos=this.superAdminService.getOrganizations(listBeanDto.getPagerDto().getPageNo(), listBeanDto.getPagerDto().getRange(), listBeanDto.getSearchBy(),
-					listBeanDto.getSortBy(),listBeanDto.getSortDirection());			
+					listBeanDto.getSortBy(),listBeanDto.getSortDirection());		
+		
 			listBeanDto.getPagerDto().setTotalItems(organizationDtos.get(0).getTotalOrganizations());
 			map.put("organizations", organizationDtos);
 			map.put("title", "View Organizations");
