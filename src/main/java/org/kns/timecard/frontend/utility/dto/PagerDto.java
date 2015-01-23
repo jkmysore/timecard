@@ -14,7 +14,7 @@ public class PagerDto {
 	
 	private Integer pageNo=0;
 	private Integer totalItems;
-	private Integer range=20;
+	private Integer range=03;
 	private Integer firstResult;
 	private Integer lastResult;
 	private Integer pagesNeeded;
@@ -44,7 +44,6 @@ public class PagerDto {
 	
 	
 	public Integer getFirstResult(){
-		System.out.println(pageNo);
 		return (pageNo*range)+1;
 	}
 	
@@ -59,7 +58,7 @@ public class PagerDto {
 	
 	
 	public Integer getLastResult(){
-		lastResult=getFirstResult()+range;
+		lastResult=getFirstResult()+range-1;
 		if(lastResult>totalItems){
 			lastResult=(totalItems%range)+getFirstResult()-1;
 		}

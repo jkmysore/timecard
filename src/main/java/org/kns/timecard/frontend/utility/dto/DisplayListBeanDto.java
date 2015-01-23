@@ -11,7 +11,7 @@ package org.kns.timecard.frontend.utility.dto;
 public class DisplayListBeanDto {
 
 	private PagerDto pagerDto=new PagerDto();
-	private String sortBy="organizationName";
+	private String sortBy;
 	private String searchBy;
 	private Boolean sortDirection=true;
 	

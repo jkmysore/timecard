@@ -63,11 +63,10 @@
         </li>
         
         
-        <li class="nav-parent" id="vacation"><a href=""><i class="fa fa-edit"></i> <span>Vacation</span></a>
+       <li class="nav-parent" id="vacation"><a href=""><i class="fa fa-edit"></i> <span>Vacation</span></a>
           <ul class="children">
-            <li><a href="#"><i class="fa fa-caret-right"></i> Add </a></li>
-            <li><a href="#"><i class="fa fa-caret-right"></i> View</a></li>
-          </ul>
+            <li><a href="${pageContext.request.contextPath}/org/viewholidays.htm"><i class="fa fa-caret-right"></i> Holidays </a></li>
+           </ul>
         </li>
         <li  id="divisions"><a href="${pageContext.request.contextPath}/division/viewdivisions.htm"><i class="fa fa-edit"></i> <span>Divisions</span></a>
           <%-- <ul class="children">

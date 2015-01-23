@@ -93,13 +93,13 @@
 		}
 		else{
 			$('#organizationShortName_error').html('');
-			f=true
+			f=true;
 		}
 		if(a==true && b==true && c==true && d==true && e==true && f==true){
 			return true;
 		}
 		else{
-			return false
+			return false;
 		}
 		
 		
@@ -174,7 +174,7 @@
 				return true;
 			}
 			else{
-				return false
+				return false;
 			}
 		}
 		

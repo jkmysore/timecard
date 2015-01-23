@@ -111,6 +111,9 @@ public class SuperAdminController {
 	public String viewOrganizations(@ModelAttribute("displayListBean") DisplayListBeanDto listBeanDto,Map<String, Object> map){
 		log.info("inside viewOrganizations()");
 		try{
+			if(null==listBeanDto.getSortBy()){
+			listBeanDto.setSortBy("organizationId");
+			}
 			ArrayList<OrganizationDto> organizationDtos=this.superAdminService.getOrganizations(listBeanDto.getPagerDto().getPageNo(), listBeanDto.getPagerDto().getRange(), listBeanDto.getSearchBy(),
 					listBeanDto.getSortBy(),listBeanDto.getSortDirection());		
 		
