@@ -2,7 +2,7 @@ package org.kns.timecard.backend.organization.employee.dao;
 
 import java.util.ArrayList;
 
-import org.kns.timecard.backend.organization.employee.exception.EmployeeNotFoundException;
+import org.kns.timecard.exception.EmployeeNotFoundException;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 
 /**

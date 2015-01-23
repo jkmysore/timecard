@@ -28,6 +28,12 @@ public class EmployeeDto{
 	@NotEmpty
 	private String confirmPassword;
 	
+	//Added by Jeevan on 
+	
+	
+	
+	
+	
 	public Integer getEmployeeId() {
 		return employeeId;
 	}

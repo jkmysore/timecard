@@ -10,32 +10,26 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.kns.timecard.backend.admin.dao.OrganizationDao;
 import org.kns.timecard.backend.organization.employee.dao.EmployeeDao;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 import org.kns.timecard.backend.organization.organization.model.Organization;
-import org.kns.timecard.backend.organization.organization.model.OrganizationConfig;
 import org.kns.timecard.backend.organization.organization.model.TimeCardPeriod;
 import org.kns.timecard.backend.timecarduser.model.Roles;
 import org.kns.timecard.backend.timecarduser.model.TimeCardUserCredentials;
 import org.kns.timecard.backend.timecarduser.model.TimecardUser;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
-import org.kns.timecard.backend.organization.organization.dao.OrganizationDao;
-import org.kns.timecard.backend.organization.organization.exception.OrganizationNotFoundException;
+import org.kns.timecard.exception.OrganizationNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.apache.commons.collections.iterators.EmptyMapIterator;
 import org.kns.timecard.backend.timecarduser.dao.UserDao;
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
-import org.kns.timecard.backend.timecarduser.model.TimecardUser;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.common.logging.LoggingFactory;
 import org.kns.timecard.frontend.common.utility.EmailSender;
 import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationConfigDto;
 import org.kns.timecard.frontend.timecarduser.dto.TimeCardUserCredentialsDto;
-import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -122,6 +116,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 	
 	
+	
+	
+	
 	/**
 	 * Created by Bhagya on October 15, 2014
 	 * @param username,password,email
@@ -156,14 +153,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 		return timecardUser;		
 	}
 	
+	
+	
+	
 	/**
 	 * Created By Bhagya on 15-oct-2014
 	 * @param Logo
 	 * @return IOException
 	 * 
 	 * Utility method to save Logo files
-	 */
-	
+	 */	
 	private void saveLogoFile(MultipartFile logo) throws IOException{
 		log.info("inside saveLogoFile()");
 		System.out.println(logo.getOriginalFilename()+"fileNAme ");
@@ -173,11 +172,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 			 destinationFile=new File(imagesFolder.getAbsolutePath()+"/"+logo.getOriginalFilename());
 			
 		 }
-		 destinationFile=new File(imagesFolder.getAbsolutePath()+"/"+logo.getOriginalFilename());
-		 
-		 logo.transferTo(destinationFile);
-	
+		 destinationFile=new File(imagesFolder.getAbsolutePath()+"/"+logo.getOriginalFilename());		 
+		 logo.transferTo(destinationFile);	
 		}
+	
+	
 	/**
 	 * Created By Bhagya on 21-oct-2014
 	 * @param 
@@ -245,8 +244,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 			OrganizationDto dtos=OrganizationDto.populateOrganizationDto(organization);
 			organizationDtos.add(dtos);
 		}
-		return organizationDtos;
-		
+		return organizationDtos;		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 	

@@ -1,8 +1,6 @@
 package org.kns.timecard.frontend.organization.division.controller;
 
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -12,15 +10,14 @@ import javax.validation.Valid;
 
 
 import org.apache.log4j.Logger;
-import org.kns.timecard.backend.organization.division.exception.DivisionNotFoundException;
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 import org.kns.timecard.frontend.organization.division.service.DivisionService;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

@@ -8,13 +8,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -58,14 +58,14 @@ public class Organization implements Serializable{
 	@Column(name="created_date",nullable=false)
 	private Date createdDate;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST})
+	@ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="created_by",nullable=false)
 	private TimecardUser createdBy;
 	
 	@Column(name="modified_date")
 	private Date modifiedDate;
 	
-	@ManyToOne(cascade={CascadeType.PERSIST})
+	@ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="modified_by")
 	private TimecardUser modifiedBy;
 	
@@ -76,18 +76,37 @@ public class Organization implements Serializable{
 	@JoinColumn(name="timecard_period")
 	private TimeCardPeriod timeCardPeriod;
 	
-	@OneToOne(cascade={CascadeType.PERSIST})
+	@OneToOne(cascade={CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="site_admin")
 	private TimecardUser siteAdmin;
 	
 	@ManyToMany(cascade={CascadeType.PERSIST})
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@Fetch(FetchMode.SELECT)	
-	@JoinTable(name="kns_timecard_organization_managers",catalog="timecard_new",
+	@JoinTable(name="kns_timecard_organization_managers",
 		joinColumns={@JoinColumn(name="organization_id")},
 		inverseJoinColumns={@JoinColumn(name="user_id")}
 	)	
 	private Set<TimecardUser> siteManagers =new HashSet<TimecardUser>();
+	
+	
+
+
+	@Column(name="is_active")
+	private Boolean isActive;
+	
+	@Column(name="is_logs_saved")
+	private Boolean isLogsSaved;
+	
+	@Column(name="is_user_logs_saved")
+	private Boolean isUserLogsSaved;
+	
+	
+	private Integer totalOrganizations;
+	
+	
+	
+	
 	/*@Fetch(FetchMode.JOIN)
 	@OneToMany(cascade={CascadeType.PERSIST})
 	@JoinTable(name="kns_timecard_organization_managers",
@@ -191,8 +210,41 @@ public class Organization implements Serializable{
 	public void setSiteManagers(Set<TimecardUser> siteManagers) {
 		this.siteManagers = siteManagers;
 	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
 	
 	
+	
+	
+	public Boolean getIsLogsSaved() {
+		return isLogsSaved;
+	}
+
+	public void setIsLogsSaved(Boolean isLogsSaved) {
+		this.isLogsSaved = isLogsSaved;
+	}
+
+	public Boolean getIsUserLogsSaved() {
+		return isUserLogsSaved;
+	}
+
+	public void setIsUserLogsSaved(Boolean isUserLogsSaved) {
+		this.isUserLogsSaved = isUserLogsSaved;
+	}
+
+	public Integer getTotalOrganizations() {
+		return totalOrganizations;
+	}
+
+	public void setTotalOrganizations(Integer totalOrganizations) {
+		this.totalOrganizations = totalOrganizations;
+	}
 	
 	
 	

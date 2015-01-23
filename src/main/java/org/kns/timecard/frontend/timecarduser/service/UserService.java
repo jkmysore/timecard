@@ -1,6 +1,6 @@
 package org.kns.timecard.frontend.timecarduser.service;
 
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.dto.ChangePasswordDto;
 

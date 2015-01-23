@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
-import org.kns.timecard.backend.timecarduser.model.TimecardUser;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.security.core.Authentication;

@@ -22,7 +22,7 @@
 		var orgName=$('#organizationName').val();
 		var orgShortName=$('#organizationShortName').val();
 		var pwdFilter=/^[A-Za-z0-9!@#$%^&*()_]{8,20}$/;
-		var usrFilter=/^[A-Za-z0-9 ]{8,20}$/;
+		var usrFilter=/^[A-Za-z0-9 ]{6,20}$/;
 		var emailFilter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i ;
 		var logoExtension = logo.split('.').pop().toUpperCase();
 		var a,b,c,d,e,f=true;

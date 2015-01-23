@@ -9,7 +9,7 @@
 	          <li>
 	            <div class="btn-group">
 	              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width:50;height:25">
-	                <img src="/profile/${sessionScope.userId}/${sessionScope.profilePic}" alt=""  />
+	                <img src="/timecard_images/profile/${sessionScope.userId}/${sessionScope.profilePic}" alt=""  />
 	               ${sessionScope.user_name }
 	                <span class="caret"></span>
 	              </button>

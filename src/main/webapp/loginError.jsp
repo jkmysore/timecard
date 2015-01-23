@@ -38,7 +38,7 @@
 			                <div class="logopanel">
 			                        <h1 style="text-align:center;"><a href="home.htm"><img src="images/logo.png"></a></h1>
 			                 </div>
-			                <div style="height: 400px;text-align: center;font-weight: bold;" class="signinpanel">
+			                <div style="height: 400px;text-align: center;font-weight: bold;" >
 			                	<form>  
 						                	  <h1 style="color:red;font-size: 24px;">                	  
 						                	  <%request.getAttribute("loginError"); %>	${loginError }	${error}   	${param.message } ${message }	 ${status } ${loginError }

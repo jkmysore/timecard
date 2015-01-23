@@ -31,14 +31,16 @@
 					   </div>
 			            <div class="col-md-5">
 			                <div class="logopanel">
-			                        <h1 style="text-align:center;"><img src="images/logo.png"></h1>
+			                        <h1 style="text-align:center;">
+			                        	<a href="${pageContext.request.contextPath}/home.htm">	<img src="images/logo.png"></a>
+			                        </h1>
 			                 </div>
 			                <form method="post" action="<c:url value='resetpassword.htm' />" onsubmit="return validateResetPasswordForm();">
 			                    <h4 class="nomargin">Reset Password</h4>	
 			                    <label style="margin-top: 10px;font-size: 12px;"> Password :</label> <span id="password_error" class="error_msg"></span>	                   
 			                    <input type="password" class="form-control" placeholder="Password" name="password" id="password" style="margin-top: 0px;width: 95%;"/>
 			                 <label style="margin-top: 10px;font-size: 12px;">Confirm Password :</label> <span id="cpassword_error" class="error_msg"></span>	                   
-			                    <input type="password" class="form-control" placeholder="Confirm Password" name="cpassword" id="cpassword" style="margin-top: 0px;width: 95%;" />
+			                    <input type="password" class="form-control" placeholder="Confirm Password" name="cpassword" id="cpassword" style="margin-top: 0px;width: 95%;" /conte>
 			                 
 			                 	<input type="hidden" name="userCredentialId" value="${userCredentialId }"> 
 			                    

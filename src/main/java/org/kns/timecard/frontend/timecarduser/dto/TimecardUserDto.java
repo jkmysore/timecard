@@ -1,10 +1,6 @@
 package org.kns.timecard.frontend.timecarduser.dto;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.kns.timecard.backend.timecarduser.model.Roles;
 import org.kns.timecard.backend.timecarduser.model.TimecardUser;
 
 /**

@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.kns.timecard.backend.timecarduser.model.Roles;
 import org.kns.timecard.backend.timecarduser.model.TimeCardUserCredentials;
-import org.kns.timecard.backend.timecarduser.model.TimecardUser;
 
 /**
  * Created by Bhagya on September 10, 2014

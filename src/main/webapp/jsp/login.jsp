@@ -41,15 +41,15 @@
 			                <form method="post" id="loginForm" action="<c:url value='/j_spring_security_check' />" onsubmit="return validateLogin();">
 			                    <h4 class="nomargin">Sign In</h4>
 			                    <p class="mt5 mb20">Login to access your account.</p>
-			                	<span>dd</span>
+			                
 			                    <input type="text" class="form-control uname" placeholder="Username" name="j_username" id="uname"/><span id="userId" style="color:red; "></span>
 			                    
 			                    <input type="password" class="form-control pword" placeholder="Password" name="j_password" id="pwd"/><span id="passwd" style="color:red; "></span>
 			                    <input id="remember" name="_spring_security_remember_me" value="true" tabindex="7" type="checkbox"><small>Remember me</small>
 			                    <br />
 			                    <a href="forgetpassword.htm"><small>Forgot Your Password?</small></a>
-								 <small style="float:right;">Not a member? <a href="index.html">Sign Up</a></small>
-			                    <button class="btn btn-success btn-block" >Sign In</button>
+								<!--  <small style="float:right;">Not a member? <a href="index.html">Sign Up</a></small>-->
+			                    <button class="btn btn-success btn-block" >Sign In</button> 
 			                </form>
 			            </div>
 						<div class="col-md-3">

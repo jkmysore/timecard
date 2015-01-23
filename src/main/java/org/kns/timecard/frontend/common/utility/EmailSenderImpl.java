@@ -3,11 +3,10 @@ package org.kns.timecard.frontend.common.utility;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
-import org.kns.timecard.backend.timecarduser.exception.MailNotSendException;
+import org.kns.timecard.exception.MailNotSendException;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.springframework.beans.factory.annotation.Autowired;

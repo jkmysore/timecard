@@ -1,7 +1,5 @@
 package org.kns.timecard.frontend.organization.organization.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,35 +12,25 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-import org.kns.timecard.backend.organization.organization.exception.OrganizationNotFoundException;
-import org.kns.timecard.backend.organization.organization.model.Organization;
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
+import org.kns.timecard.exception.OrganizationNotFoundException;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
 import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationConfigDto;
-import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
-import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
-import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 
@@ -55,7 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 
 
-@RequestMapping(value="/organization/*")
+@RequestMapping(value="/org/*")
 @Controller("organizationController")
 public class OrganizationController {
 	
@@ -64,6 +52,8 @@ public class OrganizationController {
 	
 	@Resource(name="organizationService")
 	private OrganizationService organizationService;
+	
+	
 	@Resource(name="userService")
 	private UserService userService;
 
@@ -102,19 +92,7 @@ public class OrganizationController {
 	 * 
 	 * Method to initiate adding Organization Process.
 	 */
-	@RequestMapping(value="add.htm",method=RequestMethod.GET)
-	public String initiateAddOrganization(Map<String, Object> map,@ModelAttribute("organization") OrganizationDto organization){
-		log.info("inside inititateAddOrganization()");
-		try{
-			return "timecard/organization/organization/addOrganization";
-		}
-		catch(Exception e){
-			String message="Error While Initiating Organization Creation";
-			map.put("message", message);
-			map.put("title", message);
-			return "error";
-		}	
-	}
+	
 	
 	
 	
@@ -147,6 +125,7 @@ public class OrganizationController {
 			return "error";
 		}
 	}
+	
 	
 	/**
 	 * Created By Bhagya on October 21st,2014

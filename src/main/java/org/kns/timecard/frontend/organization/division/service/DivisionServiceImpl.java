@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
+import org.kns.timecard.backend.admin.dao.OrganizationDao;
 import org.kns.timecard.backend.organization.division.dao.DivisionDao;
-import org.kns.timecard.backend.organization.division.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundException;
 import org.kns.timecard.backend.organization.division.model.Division;
-import org.kns.timecard.backend.organization.organization.dao.OrganizationDao;
 import org.kns.timecard.backend.organization.organization.model.Organization;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;

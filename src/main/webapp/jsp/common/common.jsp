@@ -11,7 +11,8 @@
 	<script src="${pageContext.request.contextPath}/js/modernizr.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/retina.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/custom.js"></script>
-
+	<script src="${pageContext.request.contextPath}/js/jquery.sparkline.min.js"></script>
+	<	<script src="${pageContext.request.contextPath}/js/common.js"></script>script src="${pageContext.request.contextPath}/js/toggles.min.js"></script>
 
 
  	<link href="${pageContext.request.contextPath}/css/style.default.css" rel="stylesheet">
@@ -19,6 +20,9 @@
   	  	<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
   	  	
   	   <link href = "${pageContext.request.contextPath}/images/logo.png" rel="icon" type="image/png" />
+  	   
+  	   
+  	   
   	
  	 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
  	 <!--[if lt IE 9]>

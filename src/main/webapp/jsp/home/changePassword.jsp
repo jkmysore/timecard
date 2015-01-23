@@ -36,7 +36,7 @@
 	<section> 
 	  
 	  <!--  Left Panel -->
-	  	<%@ include file="/jsp/panels/leftPanel.jsp" %>
+	  	<%@ include file="/jsp/panels/superAdminPanel.jsp" %>
 	  <!--  Left Panel -->
 	  
 	  

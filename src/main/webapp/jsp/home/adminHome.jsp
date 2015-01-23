@@ -12,8 +12,7 @@
 			<%@ include file="/jsp/common/common.jsp" %>
 	
  		 <link href="css/jquery.datatables.css" rel="stylesheet">		
-		<script src="js/jquery.sparkline.min.js"></script>
-		<script src="js/toggles.min.js"></script>
+		
 		<script src="js/retina.min.js"></script>
 		<script src="js/jquery.cookies.js"></script>		
 		<script src="js/flot.min.js"></script>
@@ -35,7 +34,7 @@
 	<section> 
 	  
 	  <!--  Left Panel -->
-	  	<%@ include file="/jsp/panels/leftPanel.jsp" %>
+	  	<%@ include file="/jsp/panels/superAdminPanel.jsp" %>
 	  <!--  Left Panel -->
 	  
 	  
@@ -44,6 +43,8 @@
 	   <!--  Header Bar -->
 	    	<%@ include file="/jsp/home/header.jsp" %>
 	    <!--  Header Bar -->
+	    
+	    
 	    
 	    <div class="pageheader">
 	      <h2><i class="fa fa-home"></i> Dashboard <span>Subtitle goes here...</span></h2>

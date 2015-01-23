@@ -4885,11 +4885,14 @@ th.visible-lg, td.visible-lg {
     display: table-cell !important;
 }
 }
-@media (max-width: 767px) {
-.hidden-xs, tr.hidden-xs, th.hidden-xs, td.hidden-xs {
-    display: none !important;
-}
-}
+	@media (max-width: 767px) {
+		.hidden-xs, tr.hidden-xs, th.hidden-xs, td.hidden-xs {
+		    display: none !important;
+		}
+		.form-horizontal .control-label {
+			text-align: right;
+		}
+	}
 @media (min-width: 768px) and (max-width: 991px) {
 .hidden-sm, tr.hidden-sm, th.hidden-sm, td.hidden-sm {
     display: none !important;

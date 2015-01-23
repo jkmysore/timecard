@@ -300,7 +300,7 @@ jQuery(document).ready(function() {
    }
    
    
-   // Sticky Header
+  /* // Sticky Header
    if(jQuery.cookie('sticky-header'))
       jQuery('body').addClass('stickyheader');
       
@@ -337,6 +337,6 @@ jQuery(document).ready(function() {
    jQuery('.dropdown-menu').find('form').click(function (e) {
       e.stopPropagation();
     });
-      
+      */
 
 });

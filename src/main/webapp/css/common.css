@@ -33,6 +33,30 @@
 }
 
 
+	.searchLbl{
+	
+		padding-top: 10px;
+		font-weight: bold !important;
+	}
+	
+	
+	.searchTxt{
+		width: 95% !important;
+		padding: 6px 6px 7px;
+
+	}
+	
+	
+	.errorMsg{
+		color: #EC6C11;
+		font-size: 18px;
+		margin-left: 100px;
+	}
+
+
+
+
+
 
 /* Pagination *//* added by bhagya on august 11th,2014 */
 

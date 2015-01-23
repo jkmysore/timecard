@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.kns.timecard.backend.organization.organization.model.Organization;
 import org.kns.timecard.backend.timecarduser.model.TimecardUser;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
@@ -36,6 +35,15 @@ public class OrganizationDto{
 	private TimeCardPeriodDto timeCardPeriod;
 	private TimecardUserDto siteAdmin;
 	private Set<TimecardUserDto> siteManagers=new HashSet<TimecardUserDto>();
+	private Boolean isActive;
+	
+	//Created on Jan 21, 2015 by Jeevan
+	private Boolean isLogsSaved;
+	private Boolean isUserLogsSaved;
+	private Integer totalOrganizations;
+	
+	
+	
 	
 	public Integer getOrganizationId() {
 		return organizationId;
@@ -117,8 +125,38 @@ public class OrganizationDto{
 	public void setSiteManagers(Set<TimecardUserDto> siteManagers) {
 		this.siteManagers = siteManagers;
 	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
 	
 	
+	
+	
+	
+	public Boolean getIsLogsSaved() {
+		return isLogsSaved;
+	}
+	public void setIsLogsSaved(Boolean isLogsSaved) {
+		this.isLogsSaved = isLogsSaved;
+	}
+	public Boolean getIsUserLogsSaved() {
+		return isUserLogsSaved;
+	}
+	public void setIsUserLogsSaved(Boolean isUserLogsSaved) {
+		this.isUserLogsSaved = isUserLogsSaved;
+	}
+	
+	
+	
+	public Integer getTotalOrganizations() {
+		return totalOrganizations;
+	}
+	public void setTotalOrganizations(Integer totalOrganizations) {
+		this.totalOrganizations = totalOrganizations;
+	}
 	/*
 	 * Added By Bhagya on September 10,2014
 	 * Method To follow Organization dto
@@ -131,6 +169,13 @@ public class OrganizationDto{
 		organizationDto.setOrganizationName(organization.getOrganizationName());
 		organizationDto.setOrganizationShortName(organization.getOrganizationShortName());
 		organizationDto.setLogoPath(organization.getLogoPath());
+		organizationDto.setIsActive(organization.getIsActive());
+		organizationDto.setIsLogsSaved(organization.getIsLogsSaved());
+		organizationDto.setIsUserLogsSaved(organization.getIsUserLogsSaved());
+		
+		if(null!=organization.getTotalOrganizations()){
+			organizationDto.setTotalOrganizations(organization.getTotalOrganizations());
+		}
 		
 		if(null!=organization.getCreatedDate()){
 			organizationDto.setCreatedDate(organization.getCreatedDate());

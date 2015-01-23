@@ -125,10 +125,14 @@
 		</property>
 	   </bean>
 	   
-	 <bean id="organizationService"
-		class="org.kns.timecard.frontend.organization.organization.service.OrganizationServiceImpl" >
-		<property name="logoPath"  value="F:/Timecard/images/" />
-	</bean>
+	
+		 <bean id="superAdminService"
+				class="org.kns.timecard.frontend.admin.service.SuperAdminServiceImpl" >
+				<property name="logoPath"  value="F:/work/Timecard/images/" />
+			</bean>
+	
+	
+	
 		<!-- <bean id="userService"
 		class="org.kns.timecard.frontend.user.service.UserServiceImpl" >
 		<property name="profilePic"  value="F:/TIMECARD/images/" />

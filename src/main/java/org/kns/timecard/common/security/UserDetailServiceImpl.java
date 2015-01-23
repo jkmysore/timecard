@@ -9,7 +9,7 @@ import java.util.HashSet;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.kns.timecard.backend.timecarduser.exception.TimecardUserNotFoundException;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.timecarduser.dto.RolesDto;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
@@ -123,7 +123,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		
 		
 		// Checking Account Lock Status 
-		if(!userEntity.getIsLocked()){
+		if(userEntity.getIsLocked()){
 			accountNonLocked=false;
 			throw new LockedException("Account is Locked"); 
 		}

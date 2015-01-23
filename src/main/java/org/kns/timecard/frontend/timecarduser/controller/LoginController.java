@@ -79,6 +79,7 @@ public class LoginController {
 			if(roles.contains("ROLE_SUPER_ADMIN")){				
 				return "home/adminHome";				
 			}
+			
 			else if(roles.contains("ROLE_SITE_ADMIN")){
 				if(userDto.getIsFirstLogin()){
 					map.put("userId",userDto.getUserId());

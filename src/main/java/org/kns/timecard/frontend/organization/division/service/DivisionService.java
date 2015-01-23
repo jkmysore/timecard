@@ -2,7 +2,7 @@ package org.kns.timecard.frontend.organization.division.service;
 
 import java.util.ArrayList;
 
-import org.kns.timecard.backend.organization.division.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundException;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 /**
  * 

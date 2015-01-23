@@ -70,6 +70,24 @@ public class Employee implements Serializable {
 	@Column(name="is_manager")
 	private Boolean isManager;
 	
+	
+	@ManyToOne
+	@JoinColumn(name="manager_id")
+	private TimecardUser manager;
+
+	
+	
+	
+	
+	
+	public TimecardUser getManager() {
+		return manager;
+	}
+
+	public void setManager(TimecardUser manager) {
+		this.manager = manager;
+	}
+
 	public Integer getEmployeeId() {
 		return employeeId;
 	}

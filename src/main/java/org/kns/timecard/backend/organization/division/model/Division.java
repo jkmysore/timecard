@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.kns.timecard.backend.organization.organization.model.Organization;
-import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 
 /*
  * Created by Jeevan on June 16, 2014
