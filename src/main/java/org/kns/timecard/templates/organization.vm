@@ -1,16 +1,57 @@
+<table id="mailContent" bgcolor="#f3f3f3" width="1000">
+		<tr>
+        	<td>
+            	 <table bgcolor="#fff" width="850" align="center" cellspacing="30">
+					<tr>
+                    	<td>
+                        	<table  class="header" width="850" cellspacing="0">
+                				<tr>
+                    				<td style="text-align:left; margin-left:20px; width:50% ">
+                        						<a href="www.knstek.com"><img src="cid:logo" /></a>
+                         			</td>
+                                     <td style="text-align:right; margin-right:40px;margin-top:40px;" valign="bottom" >
+                                            <h3 style="color:#c63">Organization Creation</h3>
+                                     </td> 	
+                    			 </tr>
+                                 <tr bgcolor="#f3f3f3" height="30" height="20" >
+                                 	<td></td>
+                                    <td></td>
+                                 </tr>                                 
+               				 </table>   
+                             <table class="mailBody">
+                             	<tr>
+                                	<td>
+										Hai <b> ${organization.organizationName},</b> <br />
+										 welcome to  <b>Time Card!</b>
+										
+										
+										<p>   Congratulations, Your Account has been created, please find your credentials below </p>
+										   
+										   <p> Username : ${organization.siteAdmin.timeCardCredentials.username} </p>
+										   <p> Password : ${organization.siteAdmin.timeCardCredentials.password} </p>
+										 </td>
+                                </tr>
+                               
+                                <tr bgcolor="#f3f3f3" height="30" height="20" >
+                                 	<td></td>
+                                    <td></td>
+                                 </tr>    
+                                
+                             </table>
+                                 <table class="footer">
+                                  Thanks & Regards,<br />
+								  KNS Technologies. <br/>
+								  <br/>
+                                 For any query or assistance,feel free to <a href="#">Contact Us</a>
+                             	</table>                              
+                        </td>
+                    </tr>                 		
+                 </table> 
+                       
+            </td>
+        </tr> 	 
+        <td height="30" style="text-align:center;">
+        		<i>This is a system generated mail, please do not reply.</i>
+        	</td>
+    </table>
 
-Hai <b> ${organization.organizationName},</b> <br />
- welcome to  <b>Time Card!</b>
-
-
-<p>   Congratulations, Your Account has been created, please find your credentials below </p>
-   
-   <p> Username : ${organization.siteAdmin.timeCardCredentials.username} </p>
-   <p> Password : ${organization.siteAdmin.timeCardCredentials.password} </p>
- <br />
- <br />
- <br />
- <br />  
- 
- Regards,<br />
- KNS Technologies 

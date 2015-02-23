@@ -109,7 +109,7 @@
 		}
 		else{
 			$('#organizationShortName_error').html('');
-			f=true
+			f=true;
 		}
 		
 		
@@ -120,7 +120,7 @@
 			return true;
 		}
 		else{
-			return false
+			return false;
 		}
 		
 		
@@ -195,7 +195,7 @@
 				return true;
 			}
 			else{
-				return false
+				return false;
 			}
 		}
 		
