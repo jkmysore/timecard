@@ -190,16 +190,6 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Created By Bhagya on 15-oct-2014
 	 * @param Logo
@@ -222,6 +212,82 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 		 logo.transferTo(destinationFile);
 	
 		}
+	
+	
+	
+	/**
+	 * Created by Jeevan on Jan 23, 2015
+	 * Method to get Organization by OrganizationId
+	 * @param organizationId
+	 * @return
+	 * @throws Exception
+	 */
+	public OrganizationDto getOrganizationByOrganizationId(Integer organizationId)throws Exception{
+		log.info("inside getOrganizationByOrganizationId()");
+		Organization organization=this.adminDao.getOrganizationById(organizationId);
+		OrganizationDto organizationDto=OrganizationDto.populateOrganizationDto(organization);
+		return organizationDto;		
+	}
+	
+	
+	
+	
+	/**
+	 * Created by Jeevan on Jan 23, 2015
+	 * Method to Edit Organization By Admin.....
+	 * 
+	 * @param organizationDto
+	 * @return
+	 * @throws Exception
+	 */
+	public Integer editOrganizationByAdmin(OrganizationDto organizationDto)throws Exception{
+		log.info("inside editOrganization()");
+		Organization organization=this.adminDao.getOrganizationById(organizationDto.getOrganizationId());
+		organization.setOrganizationName(organizationDto.getOrganizationName());
+		organization.setOrganizationShortName(organizationDto.getOrganizationShortName());
+		TimecardUser superAdmin=this.userDao.getTimecardCredentialsForLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+		organization.setModifiedBy(superAdmin);
+		organization.setModifiedDate(new Date());
+		
+		organization.getSiteAdmin().getTimeCardCredentials().setUsername(organizationDto.getSiteAdmin().getTimeCardCredentials().getUsername());
+		organization.getSiteAdmin().getTimeCardCredentials().setEmail(organizationDto.getSiteAdmin().getTimeCardCredentials().getEmail());
+		
+		if(null!=organizationDto.getSiteAdmin().getTimeCardCredentials().getPassword()){
+			organization.getSiteAdmin().getTimeCardCredentials().setPassword(passwordEncoder.encode(organizationDto.getSiteAdmin().getTimeCardCredentials().getPassword()));
+		}
+		this.userDao.saveOrUpdateTimecardCredentials(organization.getSiteAdmin().getTimeCardCredentials());
+		if(null!=organizationDto.getLogo() && organizationDto.getLogo().getSize()>0){
+			organization.setLogoPath(organizationDto.getLogo().getOriginalFilename());
+		}
+		Integer editResult=this.adminDao.saveorUpdateOrganization(organization);		
+		if(null!=organizationDto.getLogo() && organizationDto.getLogo().getSize()>0){
+			this.saveLogoFile(organizationDto.getLogo(),editResult);
+		}		
+		return editResult;
+	}
+	
+	
+	
+	/**
+	 * Created by Jeevan on Jan 23, 2015
+	 * Method to change Status (Activate/Inactivate Organization)..
+	 * 
+	 * @param organizationId
+	 * @param status
+	 * @return
+	 */
+	public Integer changeOrganizationStatus(Integer organizationId,Boolean status)throws Exception{
+		log.info("inside changeOrganizationStatus()");
+		Organization organization=this.adminDao.getOrganizationById(organizationId);
+		organization.setIsActive(status);
+		Integer changeResult=this.adminDao.saveorUpdateOrganization(organization);
+		return changeResult;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

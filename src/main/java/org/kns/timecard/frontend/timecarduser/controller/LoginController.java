@@ -74,12 +74,13 @@ public class LoginController {
 			TimecardUserDto userDto=this.userService.getTimeCardUserByEmailorUsername(username);
 			session.setAttribute("profilePic", userDto.getProfilePic());
 			session.setAttribute("userId", userDto.getUserId());
+			session.setAttribute("theme", "#fff");
 			//Home Page Redirection on the basis of Roles
 			log.info("User "+username+" logged in at "+new Date());
-			if(roles.contains("ROLE_SUPER_ADMIN")){				
+			if(roles.contains("ROLE_SUPER_ADMIN")){			
+				session.setAttribute("theme", "#fff");
 				return "home/adminHome";				
-			}
-			
+			}			
 			else if(roles.contains("ROLE_SITE_ADMIN")){
 				if(userDto.getIsFirstLogin()){
 					map.put("userId",userDto.getUserId());
@@ -87,6 +88,7 @@ public class LoginController {
 					map.put("userType", "SITE_ADMIN");
 					return "redirect:/changepassword.htm";
 				}
+				
 				return "home/siteAdminHome";
 			}
 			else if(roles.contains("ROLE_SUPER_MANAGER")){
@@ -160,6 +162,8 @@ public class LoginController {
 			return "error";
 		}
 	}
+	
+	
 	
 	
 	

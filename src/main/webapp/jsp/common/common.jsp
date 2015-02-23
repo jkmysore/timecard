@@ -22,6 +22,16 @@
   	  	
   	  
   	   
+  	   <style>
+  	   	
+  	   	  .logopanel, .headerbar, .panel-heading, .panel-body, .headermenu .dropdown-toggle{
+  	   	  	background : ${sessionScope.theme} !important;
+  	   	  }
+  	   
+  	   
+  	   </style>
+  	   
+  	   
   	   
   	   
   	

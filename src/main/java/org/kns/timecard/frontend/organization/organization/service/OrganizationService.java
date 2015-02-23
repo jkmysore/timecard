@@ -19,6 +19,8 @@ import org.kns.timecard.frontend.organization.organization.dto.OrganizationConfi
  */
 public interface OrganizationService {
 
+	public OrganizationDto getOrganizationById(Integer organizationId)throws OrganizationNotFoundException;
+	
 	public Integer createOrganization(OrganizationDto organizationDto)throws Exception;
 	public ArrayList<TimeCardPeriodDto> getTimecardPeriodsFromDB()throws Exception;
 	public Integer processSavingConfigurationOfOrganization(OrganizationConfigDto configDto,Integer userId)throws Exception;

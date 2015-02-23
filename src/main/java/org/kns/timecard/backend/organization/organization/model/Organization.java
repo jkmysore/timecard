@@ -101,7 +101,30 @@ public class Organization implements Serializable{
 	@Column(name="is_user_logs_saved")
 	private Boolean isUserLogsSaved;
 	
+	@Column(name="status")
+	private String status;
 	
+	
+	@Column(name="status_change_date") //When to implement that status change
+	private Date statusDate;
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Date getStatusDate() {
+		return statusDate;
+	}
+
+	public void setStatusDate(Date statusDate) {
+		this.statusDate = statusDate;
+	}
+
 	private Integer totalOrganizations;
 	
 	

@@ -16,7 +16,9 @@
 
 	function validateOrganization(){
 		var username=$('#siteAdminUserName').val();
+		
 		var password=$('#siteAdminPassword').val();
+		
 		var email=$('#siteAdminEmail').val();
 		var logo=$('#logo').val();
 		var orgName=$('#organizationName').val();
@@ -24,8 +26,16 @@
 		var pwdFilter=/^[A-Za-z0-9!@#$%^&*()_]{8,20}$/;
 		var usrFilter=/^[A-Za-z0-9 ]{6,20}$/;
 		var emailFilter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i ;
-		var logoExtension = logo.split('.').pop().toUpperCase();
-		var a,b,c,d,e,f=true;
+		var logoExtension="";
+		if(logo.length>0){
+			 logoExtension = logo.split('.').pop().toUpperCase();
+		}
+		
+		var pwdStyle=$('.pwdDiv').css('display');
+		
+		var a,c,e,f=true;
+		var d=true;
+		var b=true;
 		
 		if(username=="" || username==null){
 			$('#siteAdminUserName_error').html('*Username Cannot Be Empty');
@@ -38,19 +48,24 @@
 		else{
 			$('#siteAdminUserName_error').html('');
 			a=true;
-			}
-		if(password=="" || password==null ){
-			$('#siteAdminPassword_error').html('*Password Cannot Be Empty');
-			b=false;
 		}
-		else if(pwdFilter.test(password)==false){
-			$('#siteAdminPassword_error').html('*Password Length Should Be 8 to 20 Charactes');
-			b=false;
+		
+		if(pwdStyle!=="none"){
+			if(password=="" || password==null ){
+				$('#siteAdminPassword_error').html('*Password Cannot Be Empty');
+				b=false;
 			}
-		else{
-			$('#siteAdminPassword_error').html('');
-			b=true;
-			}
+			else if(pwdFilter.test(password)==false){
+				$('#siteAdminPassword_error').html('*Password Length Should Be 8 to 20 Charactes');
+				b=false;
+				}
+			else{
+				$('#siteAdminPassword_error').html('');
+				b=true;
+			}	
+		}
+		
+		
 		if(email==""|| email==null){
 			$('#siteAdminEmail_error').html('*Email Cannot Be Empty');
 			c=false;
@@ -63,18 +78,19 @@
 			$('#siteAdminEmail_error').html('');
 			c=true;
 		}
-		if(logo==""||logo==null){
-			$('#logo_error').html('*You Should Upload  Logo');
-			d=false;
+		
+		
+		if(logo!="" && logo!=null){
+			if (logoExtension!="PNG" && logoExtension!="JPG" && logoExtension!="GIF" && logoExtension!="JPEG"){
+				$('#logo_error').html('*Only .png, .jpg, .gif, .jpeg are allowed');
+				d=false;
+	        }
+			else{
+				$('#logo_error').html('');
+				d=true;
+			}
 		}
-		else if (logoExtension!="PNG" && logoExtension!="JPG" && logoExtension!="GIF" && logoExtension!="JPEG"){
-			$('#logo_error').html('*Only .png, .jpg, .gif, .jpeg are allowed');
-			d=false;
-        }
-		else{
-			$('#logo_error').html('');
-			d=true;
-		}
+		 
 		if(orgName=="" || orgName==null){
 			$('#organizationName_error').html('*Organization Name Cannot Be Empty');
 			e=false;
@@ -95,7 +111,12 @@
 			$('#organizationShortName_error').html('');
 			f=true
 		}
+		
+		
 		if(a==true && b==true && c==true && d==true && e==true && f==true){
+			if(pwdStyle=="none"){
+				$('.pwdDiv').remove();
+			}
 			return true;
 		}
 		else{

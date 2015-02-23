@@ -14,3 +14,12 @@
 
 
 
+
+For Organization:
+
+1. During Login, get Organization and Check if Status is active , only if
+
+              Check(status )
+                     check if organization user is active
+                       check(user)
+                          allow login

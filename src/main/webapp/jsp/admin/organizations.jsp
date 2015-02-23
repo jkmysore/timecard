@@ -82,6 +82,7 @@
 				<div class="form-group">
 					<div class="row">
 						<div class="col-sm-7" style="text-align: center;">
+							<span class="errorMsg">${param.status }</span>
 							<c:if test="${not empty message }">
 								<span class="errorMsg">No Organizations Found </span>
 							</c:if>
@@ -168,17 +169,17 @@
 						              				
 						              				<td class="menu-action">
 						              					
-														<a href="${pageContext.request.contextPath}/admin/orgsettings.htm" title="Settings">	<i class="fa fa-wrench fa-2x"></i> </a>
+														<a href="${pageContext.request.contextPath}/admin/orgsettings.htm?organizationId=${org.organizationId}" title="Settings">	<i class="fa fa-wrench fa-2x"></i> </a>
 						              					&nbsp;
 						              					
-						              					<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="Edit Organization">	<i class="fa fa-edit fa-2x"></i> </a>
+						              					<a href="${pageContext.request.contextPath}/admin/editorganization.htm?organizationId=${org.organizationId}" title="Edit Organization">	<i class="fa fa-edit fa-2x"></i> </a>
 						              						&nbsp;
 						              					<c:choose>
 						              						<c:when test="${org.isActive eq true }">	
-						              							<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="Activate Organization">	<i class="fa fa-ban fa-2x"></i> </a>	
+						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=false" title="Activate Organization">	<i class="fa fa-ban fa-2x"></i> </a>	
 						              						</c:when>
 						              						<c:otherwise>
-						              							<a href="${pageContext.request.contextPath}/admin/editorganization.htm" title="InActivate Organization">	<i class="fa fa-check fa-2x"></i> </a>	
+						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=true" title="InActivate Organization">	<i class="fa fa-check fa-2x"></i> </a>	
 						              					    </c:otherwise>
 						              					  </c:choose>
 						              				</td>

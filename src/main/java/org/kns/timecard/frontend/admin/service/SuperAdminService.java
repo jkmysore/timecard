@@ -10,5 +10,8 @@ import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 public interface SuperAdminService {
 	public Integer createOrganization(OrganizationDto organizationDto)throws Exception;
 	public ArrayList<OrganizationDto> getOrganizations(Integer pageNo,Integer pageSize,String searchBy,String sortBy,Boolean ascending) throws OrganizationNotFoundException;
+	public OrganizationDto getOrganizationByOrganizationId(Integer organizationId)throws Exception;
+	public Integer editOrganizationByAdmin(OrganizationDto organizationDto)throws Exception;
+	public Integer changeOrganizationStatus(Integer organizationId,Boolean status)throws Exception;
 	
 }

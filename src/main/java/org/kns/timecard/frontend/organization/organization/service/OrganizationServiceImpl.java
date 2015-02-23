@@ -15,23 +15,24 @@ import org.kns.timecard.backend.organization.employee.dao.EmployeeDao;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 import org.kns.timecard.backend.organization.organization.model.Organization;
 import org.kns.timecard.backend.organization.organization.model.TimeCardPeriod;
+import org.kns.timecard.backend.timecarduser.dao.UserDao;
 import org.kns.timecard.backend.timecarduser.model.Roles;
 import org.kns.timecard.backend.timecarduser.model.TimeCardUserCredentials;
 import org.kns.timecard.backend.timecarduser.model.TimecardUser;
-import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
-import org.kns.timecard.exception.OrganizationNotFoundException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.kns.timecard.backend.timecarduser.dao.UserDao;
-import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.common.logging.LoggingFactory;
+import org.kns.timecard.exception.OrganizationNotFoundException;
+import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.common.utility.EmailSender;
-import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationConfigDto;
+import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
+import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
 import org.kns.timecard.frontend.timecarduser.dto.TimeCardUserCredentialsDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -41,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
  *Created on October 15th, 2014
  * Service for Organization
  */
+@Transactional
 @Service("organizationService")
 public class OrganizationServiceImpl implements OrganizationService {
 
@@ -78,6 +80,56 @@ public class OrganizationServiceImpl implements OrganizationService {
 	private File destinationFile;
 
 
+	
+	/**
+	 * Created by Jeevan on Jan 23, 2015
+	 * Method to get Organization by Organization Id
+	 */
+	public OrganizationDto getOrganizationById(Integer organizationId)throws OrganizationNotFoundException{
+		log.info("inside getOrganizationById()");
+		Organization organization=this.organizationDao.getOrganizationById(organizationId);
+		System.out.println("ORG "+organization.getOrganizationId());
+		OrganizationDto organizationDto=OrganizationDto.populateOrganizationDto(organization);
+		System.out.println("ORG 2"+organizationDto.getOrganizationId());
+		return organizationDto;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * Created by Bhagya on October 15, 2014

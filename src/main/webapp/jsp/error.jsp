@@ -31,7 +31,7 @@
 					   </div>
 			            <div class="col-md-5">
 			                <div class="logopanel">
-			                        <h1 style="text-align:center;"><img src="${pageContext.request.contextPath}/images/logo.png"></h1>
+			                     <h1 style="text-align:center;"> <a href="${pageContext.request.contextPath}/home.htm"><img src="${pageContext.request.contextPath}/images/logo.png"></a> </h1> 
 			                 </div>
 			                 <div class="header">
 			                 		Error 

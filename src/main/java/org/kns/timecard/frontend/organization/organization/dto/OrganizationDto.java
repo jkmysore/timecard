@@ -40,6 +40,11 @@ public class OrganizationDto{
 	//Created on Jan 21, 2015 by Jeevan
 	private Boolean isLogsSaved;
 	private Boolean isUserLogsSaved;
+	
+	//Added on Feb 09, 2015
+	private String status;
+	private Date statusDate;
+	
 	private Integer totalOrganizations;
 	
 	
@@ -151,6 +156,18 @@ public class OrganizationDto{
 	
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Date getStatusDate() {
+		return statusDate;
+	}
+	public void setStatusDate(Date statusDate) {
+		this.statusDate = statusDate;
+	}
 	public Integer getTotalOrganizations() {
 		return totalOrganizations;
 	}
@@ -196,6 +213,12 @@ public class OrganizationDto{
 		if(null!=organization.getSiteAdmin()){
 			organizationDto.setSiteAdmin(TimecardUserDto.populateTimeCardUser(organization.getSiteAdmin()));
 		}
+		organizationDto.setStatus(organization.getStatus());
+		if(null!=organization.getStatusDate()){
+			organizationDto.setStatusDate(organization.getStatusDate());
+		}
+		
+		
 		if(!organization.getSiteManagers().isEmpty()){
 			Set<TimecardUserDto> timecardUsers=new HashSet<TimecardUserDto>();
 			for(TimecardUser user:organization.getSiteManagers()){
