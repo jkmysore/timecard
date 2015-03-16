@@ -14,7 +14,7 @@
 			var empId=$('#employeeId').val();
 			var validationResult=false;
 			$.ajax({
-				url : 'http://localhost:8080/timecard/employee/checkemployee.htm',
+				url : 'http://localhost:8080/timecard/org/checkemployee.htm',
 				type: 'GET',
 				data:{empNo:empId},
 				async: false,
@@ -40,7 +40,7 @@
 			var email=$('#email').val();
 			var validationResult1=false;
 			$.ajax({
-				url : 'http://localhost:8080/timecard/employee/checkempemail.htm',
+				url : 'http://localhost:8080/timecard/org/checkempemail.htm',
 				type: 'GET',
 				data:{email:email},
 				async: false,
@@ -177,14 +177,7 @@
 				$('#divisionName_error').html('');
 				h=true;
 			}
-			if(orgName=='--Select--'||orgName==''|| orgName==null){
-				$('#organizationName_error').html('*Organization Name Should be select');
-				i=false;
-			}
-			else{
-				$('#organizationName_error').html('');
-				i=true;
-			}
+			
 			if(startDate==null|| startDate==''){
 				$('#startDate_error').html('*Employee Start Date Cannot Be Empty');
 				j=false;
@@ -203,7 +196,7 @@
 			}
 			validationResult=validateEmpNo();
 			validationResult1=validateEmpEmail();
-			if(a==true && b==true && c==true && d==true && e==true && f==true && g==true && h==true && i==true && j==true && k==true && validationResult==true && validationResult1==true){
+			if(a==true && b==true && c==true && d==true && e==true && f==true && g==true && h==true  && j==true && k==true && validationResult==true && validationResult1==true){
 				
 						return true;
 					
@@ -223,7 +216,7 @@
 			var empId=$('#employeeId').val();
 			var validationResult=false;
 			$.ajax({
-				url : 'http://localhost:8080/timecard/employee/checkmanager.htm',
+				url : 'http://localhost:8080/timecard/org/checkmanager.htm',
 				type: 'GET',
 				data:{empNo:empId},
 				async: false,
@@ -254,7 +247,7 @@
 			var email=$('#email').val();
 			var validationResult1=false;
 			$.ajax({
-				url : 'http://localhost:8080/timecard/employee/checkmanageremail.htm',
+				url : 'http://localhost:8080/timecard/org/checkmanageremail.htm',
 				type: 'GET',
 				data:{email:email},
 				async: false,

@@ -9,7 +9,10 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.kns.timecard.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundFilterException;
+import org.kns.timecard.exception.HolidayNotFoundException;
 import org.kns.timecard.backend.organization.division.model.Division;
+import org.kns.timecard.backend.organization.holiday.model.Holiday;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +63,7 @@ public class DivisionDaoImpl implements DivisionDao{
 	 */
 	
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public ArrayList<Division> getAllDivisionsBasedOnOrganizationIdFromDB(Integer page,Integer pageSize,Integer organizationId) throws DivisionNotFoundException{
 		log.info("inside getAllDivisionsFromDB()");
 		Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Division.class)
@@ -80,6 +83,52 @@ public class DivisionDaoImpl implements DivisionDao{
 			throw new DivisionNotFoundException();
 		}
 		
+		
+	}*/
+	/**
+	 * Created By bhagya On Feb 27th,2015
+	 * @param organizationId
+	 * @return division
+	 * @throws DivisionNotFoundException 
+	 * @throws DivisionNotFoundFilterException 
+	 * @throws Exception
+	 * 
+	 * Method to get all division Details
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Division> getDivisionsBasedOnOrganizationId(Integer organizationId,Integer pageNo,Integer pageSize,String sortBy,String searchBy,Boolean ascending) throws DivisionNotFoundException, DivisionNotFoundFilterException {
+		log.info("inside getDivisionsBasedOnOrganizationId()");
+		Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Division.class)
+				.add(Restrictions.eq("organization.organizationId", organizationId));
+		if(null!=searchBy){
+			criteria.add(Restrictions.ilike("divisionName", "%"+searchBy+"%"));
+		}
+		if(null!=sortBy){
+			if(ascending){
+				criteria.addOrder(Order.asc(sortBy));
+			}
+			else{
+				criteria.addOrder(Order.desc(sortBy));
+			}				
+		}
+		
+		if(null!=pageNo){
+			criteria.setFirstResult(pageNo*pageSize);
+			criteria.setMaxResults(pageSize);
+		}	
+		
+		ArrayList<Division> divisions=(ArrayList<Division>) criteria.list();
+		
+		if(!divisions.isEmpty()){
+			return divisions;
+		}
+		else if(null!=searchBy){
+			throw new DivisionNotFoundFilterException();
+		}
+		else {
+			throw new DivisionNotFoundException();
+		}
 		
 	}
 	/**

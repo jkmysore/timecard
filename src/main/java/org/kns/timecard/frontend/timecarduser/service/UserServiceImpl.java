@@ -194,8 +194,28 @@ public class UserServiceImpl implements UserService {
 			 System.out.println("MATCHED");
 			 throw new PasswordNotMatchedException();
 		 }
+		 timeCardUser.setIsFirstLogin(false);
+		 this.userDao.saveOrUpdateTimecardUser(timeCardUser);
 		 timecardcredentials.setPassword(newPassword);
 		 Integer result=this.userDao.saveOrUpdateTimecardCredentials(timecardcredentials);
 		 return result;
 	 }
+	
+	/**
+	 * Created by Bhagya on Feb 25th, 2015
+	 * Method to Update First Time User Login Value
+	 * Get user by Id
+	 *update first visit to false
+	 *update user
+	 * 
+	 */
+	public Integer handleFirstTimeVisitofUser(Integer userId)throws Exception{
+		log.info("inside handleFirstTimeVisitofUser()");
+		TimecardUser timecardUser=this.userDao.getUserByUserId(userId);
+		timecardUser.setIsFirstLogin(false);
+		Integer updateResult=this.userDao.saveOrUpdateTimecardUser(timecardUser);
+		return updateResult;
+	}
+	
+	
 }

@@ -114,30 +114,26 @@
      			 </c:if>
      			
 	              <div class="panel-body">
-	              <div class="form-group">
-	                  <label class="col-sm-2 control-label" style="width:140px;text-align:left" >Organization Name<span class="asterisk">*</span></label>
-	                  <div class="col-sm-4">
-	                    <form:select path="organization.organizationId" required="required" class="form-control" id="organizationName" style="height: 34px;width: 312px;">	                    
-	                    	<form:option value="">--Select--</form:option>
-	                    	<c:forEach var="organization" items="${organizations}">
-	                    		<form:option value="${organization.organizationId}" >${organization.organizationName}</form:option>
-	                    	</c:forEach>	                    
-	                    </form:select><span id="organizationName_error" style="color:red"></span>
-	                    <form:errors  id="organizationName_error" class="org_error" path="organization.organizationName" />
+	             <div class="form-group">
+	                  <label class="col-sm-2 control-label" style="text-align: left;">Organization Name<span class="asterisk">*</span></label>
+	                   <div class="col-sm-4 ">
+	                   <form:input  type="text"  placeholder="Type your Organization Name..." class="form-control" path="organization.organizationName" name="organizationName" id="organizationName" value="${organization.organizationName}" readonly="true" />
+	                   <span id="organizationName_error" class="org_error"></span>
+	                   <form:errors  id="organizationName_error" class="org_error" path="organization.organizationName" />
 	                  </div>
 	                 </div>
 	               <div class="form-group">
-		                <label class="col-sm-2 control-label" style="width:140px;text-align:left">Employee Id <span class="asterisk">*</span></label>
+		                <label class="col-sm-2 control-label" style="text-align:left">Employee Id <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="text" required="required" placeholder="Type your Organization Manager Employee Id..." class="form-control" path="employeeNo" id="employeeId" style="width:90%"/><span id="employeeId_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Organization Manager Employee Id..." class="form-control" path="employeeNo" id="employeeId" /><span id="employeeId_error" style="color:red"></span>
 		                    <form:errors path="employeeNo" id="employeeId_error" class="org_error"/>
 		                  </div>
 	                </div>
 	                
 	                <div class="form-group">
-	                  <label class="col-sm-2 control-label" style="width:140px;text-align:left">Division Name<span class="asterisk">*</span></label>
+	                  <label class="col-sm-2 control-label" style="text-align:left">Division Name<span class="asterisk">*</span></label>
 	                  <div class="col-sm-4">
-	                    <form:select path="division.divisionId" required="required" class="form-control" id="divisionName" style="height: 34px;width: 312px;">	                    
+	                    <form:select path="division.divisionId" required="required" class="choose form-control" id="divisionName" >	                    
 	                    	<form:option value="">--Select--</form:option>
 	                    	<c:forEach var="division" items="${divisions}">
 	                    		<form:option value="${division.divisionId}" >${division.divisionName}</form:option>
@@ -149,23 +145,23 @@
 	                 
 					<div class="form-group">
 					
-		                <label class="col-sm-2 control-label" style="width:140px;text-align:left">First Name <span class="asterisk">*</span></label>
+		                <label class="col-sm-2 control-label" style="text-align:left">First Name <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="text" required="required" placeholder="Type your Organization Manager First Name..." class="form-control" path="timecardUser.firstName" id="firstName" style="width:90%"/><span id="firstName_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Organization Manager First Name..." class="form-control" path="timecardUser.firstName" id="firstName" /><span id="firstName_error" style="color:red"></span>
 		                    <form:errors path="timecardUser.firstName" id="firstName_error" class="org_error"/>
 		                  </div>
 	                </div>
 	                <div class="form-group">
-		                <label class="col-sm-2 control-label" style="width:140px;text-align:left">Last Name <span class="asterisk">*</span></label>
+		                <label class="col-sm-2 control-label" style="text-align:left">Last Name <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="text" required="required" placeholder="Type your Organization Manager Last Name..." class="form-control" path="timecardUser.lastName" id="lastName" style="width:90%"/><span id="lastName_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Organization Manager Last Name..." class="form-control" path="timecardUser.lastName" id="lastName" /><span id="lastName_error" style="color:red"></span>
 		                    <form:errors path="timecardUser.lastName" id="lastName_error" class="org_error"/>
 		                  </div>
 	                </div>
 					<div class="form-group">
-		                <label class="col-sm-2 control-label" style="width:140px;text-align:left">Username <span class="asterisk">*</span></label>
+		                <label class="col-sm-2 control-label" style="text-align:left">Username <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="text" required="required" placeholder="Type your Organization Manager User Name..." class="form-control" path="timecardUser.timeCardCredentials.username" id="username" style="width:90%"/><span id="username_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Organization Manager User Name..." class="form-control" path="timecardUser.timeCardCredentials.username" id="username" /><span id="username_error" style="color:red"></span>
 		                    <form:errors path="timecardUser.timeCardCredentials.username" id="username_error" class="org_error"/>
 		                  </div>
 	                </div>
@@ -173,38 +169,38 @@
 					
 					
 					<div class="form-group">
-		                  <label class="col-sm-2 control-label" style="width:140px;text-align:left">Email <span class="asterisk">*</span></label>
+		                  <label class="col-sm-2 control-label" style="text-align:left">Email <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="siteAdminEmail" required="required" placeholder="Type your Organization Manager email..." class="form-control" path="timecardUser.timeCardCredentials.email" id="email" style="width:90%"/><span id="email_error" style="color:red"></span>
+		                    <form:input type="siteAdminEmail" required="required" placeholder="Type your Organization Manager email..." class="form-control" path="timecardUser.timeCardCredentials.email" id="email" /><span id="email_error" style="color:red"></span>
 		                  	  <form:errors path="timecardUser.timeCardCredentials.email" id="email_error" class="org_error"/>
 		                  </div>
 	                </div>
 					
 					<div class="form-group">
-		                  <label class="col-sm-2 control-label" style="width:140px;text-align:left">Password <span class="asterisk">*</span></label>
+		                  <label class="col-sm-2 control-label" style="text-align:left">Password <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
 		                    <form:input type="email" required="required" placeholder="Type your Organization Manager Password..." class="form-control" path="timecardUser.timeCardCredentials.password"  id="password" style="width:90%" /><span id="password_error" style="color:red"></span>
 		                      <form:errors path="timecardUser.timeCardCredentials.password" id="password_error" class="org_error"/>
 		                  </div>
 	                </div>
 	                <div class="form-group">
-		                  <label class="col-sm-2 control-label" style="width:140px;text-align:left">Confirm Password <span class="asterisk">*</span></label>
+		                  <label class="col-sm-2 control-label" style="text-align:left">Confirm Password <span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="email" required="required" placeholder="Type your Confirm Password..." class="form-control" path="confirmPassword"  id="confirmPassword" style="width:90%" /><span id="confirmPassword_error" style="color:red"></span>
+		                    <form:input type="email" required="required" placeholder="Type your Confirm Password..." class="form-control" path="confirmPassword"  id="confirmPassword"  /><span id="confirmPassword_error" style="color:red"></span>
 		                      <form:errors path="confirmPassword" id="confirmPassword_error" class="org_error"/>
 		                  </div>
 	                </div>
 	                <div class="form-group">
-		                  <label class="col-sm-2 control-label" style="width:140px;text-align:left">Employee Start Date</label>
+		                  <label class="col-sm-2 control-label" style="text-align:left">Employee Start Date</label>
 		                  <div class="col-sm-4"  >
-		                    <form:input type="text" required="required" placeholder="Type your Employee StartDate..." class="form-control" path="startDate"  id="startDate" style="width:90%;display: -webkit-inline-box;" /><span id="startDate_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Employee StartDate..." class="date-style form-control" path="startDate"  id="startDate" style="display: -webkit-inline-box;" /><span id="startDate_error" style="color:red"></span>
 		                   </div>
 	                </div>
 	                
 	                <div class="form-group">
-		                  <label class="col-sm-2 control-label" style="width:140px ;text-align:left">Employee Date Of Birth</label>
+		                  <label class="col-sm-2 control-label" style="text-align:left">Employee Date Of Birth</label>
 		                  <div class="col-sm-4"  >
-		                    <form:input type="text" required="required" placeholder="Type your Employee Date Of Birth..." class="form-control" path="timecardUser.dateofBirth"  id="dateofBirth" style="width:90%;display: -webkit-inline-box;" /><span id="dateofBirth_error" style="color:red"></span>
+		                    <form:input type="text" required="required" placeholder="Type your Employee Date Of Birth..." class="date-style form-control" path="timecardUser.dateofBirth"  id="dateofBirth" style="display: -webkit-inline-box;" /><span id="dateofBirth_error" style="color:red"></span>
 		                      
 		                  </div>
 	                </div>

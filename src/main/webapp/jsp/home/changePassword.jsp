@@ -22,7 +22,7 @@
 		<script src="${pageContext.request.contextPath}/js/raphael-2.1.0.min.js"></script>		
 		<script src="${pageContext.request.contextPath}/js/jquery.datatables.min.js"></script>
 		<script src="${pageContext.request.contextPath}/js/chosen.jquery.min.js"></script>	
-		
+		<script src="${pageContext.request.contextPath}/js/user.js"></script>
 	
 </head>
 
@@ -54,7 +54,7 @@
       <div class="row">
         
         <div class="col-md-11">
-          <form:form class="form-horizontal" action="${pageContext.request.contextPath}/changepassword.htm" method="post" id="basicForm" novalidate="novalidate"  enctype="multipart/form-data" commandName="changePassword" onsubmit="return validateChangePassword();">
+          <form:form class="form-horizontal" action="${pageContext.request.contextPath}/changepassword.htm" method="post" id="basicForm" novalidate="novalidate" commandName="changePassword" onsubmit="return validateChangePassword();">
 	          <div class="panel panel-default">
 	               <div class="titleHeader">Change Password</div>
 	               <div class="title" style="color: #636e7b;">
@@ -64,16 +64,16 @@
 	                <div class="form-group">
 	                  <label class="col-sm-2 control-label"> Current Password  <span class="asterisk">*</span></label>
 	                  <div class="col-sm-4">
-	                    <form:input type="password" required="required" placeholder="Type your Organization Name..." class="form-control" path="oldPassword" />
-	                    <form:errors  id="oldPassword_error" class="org_error" path="oldPassword" />
+	                    <form:input type="password" required="required" placeholder="Type your Current Password..." class="form-control" path="oldPassword" id="oldPassword"/><span id="oldPassword_error" style="color:red"></span>
+	                    <form:errors  path="oldPassword" id="oldPassword_error" class="org_error"  />
 	                  </div>
 	                 </div>
 					
 					<div class="form-group">
 	                  <label class="col-sm-2 control-label">New Password<span class="asterisk">*</span></label>
 	                  <div class="col-sm-4">
-	                    <form:input type="password" required="required" placeholder="Type your Organization Short Name..." class="form-control" path="newPassword" />
-	                 	 <form:errors id="newPassword_error" class="org_error" path="newPassword"/>
+	                    <form:input type="password" required="required" placeholder="Type your New Password..." class="form-control" path="newPassword"  id="newPassword"/><span id="newPassword_error" style="color:red"></span>
+	                 	 <form:errors path="newPassword" id="newPassword_error" class="org_error" />
 	                  </div>
 	                </div>
 					
@@ -81,8 +81,8 @@
 					<div class="form-group">
 		                <label class="col-sm-2 control-label">Confirm Password<span class="asterisk">*</span></label>
 		                  <div class="col-sm-4">
-		                    <form:input type="password" required="required" placeholder="Type your Site Admin User Name..." class="form-control" path="confirmPassword"/>
-		                    <form:errors  id="confirmPassword_error" class="org_error" path="confirmPassword" />
+		                    <form:input type="password" required="required" placeholder="Type your Confirm Password..." class="form-control" path="confirmPassword" id="confirmPassword"/><span id="confirmPassword_error" style="color:red"></span>
+		                    <form:errors  path="confirmPassword" id="confirmPassword_error" class="org_error" />
 		                  </div>
 	                </div>
 					
@@ -110,10 +110,10 @@
       						<button class="btn btn-primary">Next</button>
       						<c:choose>
       							<c:when test="${userType eq 'SITE_ADMIN'}">
-      									<a href="${pageContext.request.contextPath}/organization/configuration.htm?userId=${userId}&firstVisit=${firstVisit}" class="btn btn-default" type="reset">Skip</a> 
+      									<a href="${pageContext.request.contextPath}/org/configuration.htm?userId=${userId}&firstVisit=${firstVisit}" class="btn btn-default" type="reset">Skip</a> 
       							</c:when>
       							<c:otherwise>
-      									 <a href="${pageContext.request.contextPath}/firstlogin.htm?firstVisit=${firstVisit}" class="btn btn-default" type="reset">Skip</a>      
+      									 <a href="${pageContext.request.contextPath}/firstlogin.htm?userId=${userId}" class="btn btn-default" type="reset">Skip</a>      
       							</c:otherwise>
       						</c:choose>
       						

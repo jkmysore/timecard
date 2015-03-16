@@ -3,6 +3,7 @@ package org.kns.timecard.backend.admin.dao;
 import java.util.ArrayList;
 
 import org.kns.timecard.backend.organization.organization.model.Organization;
+import org.kns.timecard.backend.organization.organization.model.OrganizationConfig;
 import org.kns.timecard.backend.organization.organization.model.TimeCardPeriod;
 import org.kns.timecard.backend.timecarduser.model.TimecardUser;
 import org.kns.timecard.exception.OrganizationNotFoundException;
@@ -19,4 +20,8 @@ public interface OrganizationDao {
 	public ArrayList<TimeCardPeriod> getTimecardPeriods() throws Exception;
 	public ArrayList<Organization> getOrganizationsByAdminorManager(TimecardUser timeCardUser)throws OrganizationNotFoundException;
 	public Organization getOrganizationById(Integer organizationId) throws OrganizationNotFoundException;
+	public Organization getOrganizationByUserId(Integer userId) throws OrganizationNotFoundException;
+	public Integer saveorUpdateOrganizationConfiguration(OrganizationConfig orgConfiguration )throws Exception;
+	public Organization getOrganizationByUserEmail(TimecardUser timeCardUser) throws OrganizationNotFoundException;
+	
 }

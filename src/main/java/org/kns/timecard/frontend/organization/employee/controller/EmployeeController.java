@@ -11,16 +11,20 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.kns.timecard.exception.DivisionNotFoundException;
 import org.kns.timecard.exception.EmployeeNotFoundException;
+import org.kns.timecard.exception.EmployeeNotFoundFilterException;
+import org.kns.timecard.exception.HolidayNotFoundException;
 import org.kns.timecard.exception.OrganizationNotFoundException;
 import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 import org.kns.timecard.frontend.organization.division.service.DivisionService;
 import org.kns.timecard.frontend.organization.employee.dto.EmployeeDto;
 import org.kns.timecard.frontend.organization.employee.service.EmployeeService;
+import org.kns.timecard.frontend.organization.holiday.dto.HolidayDto;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
+import org.kns.timecard.frontend.utility.dto.DisplayListBeanDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -47,7 +51,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * Controller for Employee
  * only Site Admin Will have access to these methods ..
  */
-@RequestMapping(value="/employee/*")
+
 @Controller("employeeController")
 public class EmployeeController{
 	private static Logger log=Logger.getLogger(EmployeeController.class);
@@ -102,24 +106,18 @@ public class EmployeeController{
 	 * GET method For Adding The Employee
 	 */
 	
-	@RequestMapping(value="addemployee.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/addemployee.htm",method=RequestMethod.GET)
 	public String initiateAddEmployee(Authentication authentication,Map<String, Object> map, @ModelAttribute("employeeDto") EmployeeDto employeeDto)
 	{
 		log.info("inside initiateAddEmployee()");
-		Integer organizationId=null;
-		 ArrayList<OrganizationDto> organizationDtos=null;
+		OrganizationDto organizationDto=null;
 		try{
-
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			  organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			 for(int i=0;i<organizationDtos.size();i++){
-				  organizationId=organizationDtos.get(i).getOrganizationId();
-			 }
-			 ArrayList<DivisionDto> divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null, organizationId);
-			 map.put("organizations", organizationDtos);
-			 map.put("divisions",divisionDtos);
-			map.put("organizations",organizationDtos);
+			organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			ArrayList<DivisionDto> divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationDto.getOrganizationId(), null, null, null, null, true);
+			map.put("organization", organizationDto);
+			map.put("divisions",divisionDtos);
 			return "timecard/organization/employee/addEmployee";
 		}
 		catch(TimecardUserNotFoundException e){
@@ -129,8 +127,8 @@ public class EmployeeController{
 			return "response";
 		}
 		catch(DivisionNotFoundException e){
-			map.put("organizations",organizationDtos);
-			map.put("organizationId",organizationId);
+			map.put("organizations",organizationDto);
+			map.put("organizationId",organizationDto.getOrganizationId());
 			String message="Divisions Not Found,Please Add Division to Continue..";
 			map.put("message", message);
 			map.put("title", message);
@@ -153,33 +151,30 @@ public class EmployeeController{
 	 * 
 	 * Method For saving the Added Employee Details
 	 */
-	@RequestMapping(value="addemployee.htm",method=RequestMethod.POST)
+	@RequestMapping(value="org/addemployee.htm",method=RequestMethod.POST)
 	public String addEmployee(Map<String,Object> map,@Valid @ModelAttribute("employeeDto") EmployeeDto employeeDto,BindingResult validResult,
 			RedirectAttributes redAttributes,@RequestParam("employeeType") String employeeType){
 		log.info("inside addEmployee()");
+		OrganizationDto organizationDto=null;
 		try{
-			Integer organizationId=null;
 			if (validResult.hasErrors()) {
+				System.out.println("inside the validation of errors");
 				Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 				String useremail=auth.getName();
-				 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-				 for(int i=0;i<organizationDtos.size();i++){
-					  organizationId=organizationDtos.get(i).getOrganizationId();
-				 }
-				
-				 ArrayList<DivisionDto> divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null,organizationId);
+				organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+				ArrayList<DivisionDto> divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationDto.getOrganizationId(), null, null, null, null, true);
 				map.put("divisions", divisionDtos);
-				map.put("organizations",organizationDtos);
+				map.put("organization",organizationDto);
 				return "timecard/organization/employee/addEmployee";
 			}
 			
 			Integer result=this.employeeService.savingAddedEmployeeDetails(employeeDto, employeeDto.getDivision().getDivisionId(), employeeDto.getOrganization().getOrganizationId());
 			if(result>0){
-				String employeeMessage="Employee Added Successfully";
-				redAttributes.addFlashAttribute("employeeMessage",
-				employeeMessage);
+				String status="Employee Added Successfully";
+				redAttributes.addFlashAttribute("status",
+				status);
 				
-				return "redirect:/employee/viewemployees.htm?organizationId="+employeeDto.getOrganization().getOrganizationId()+"&employeeMessage="+employeeMessage+"&employeeType="+employeeType;
+				return "redirect:/org/viewemployees.htm?organizationId="+employeeDto.getOrganization().getOrganizationId()+"&status="+status+"&employeeType="+employeeType;
 			}
 			else{
 				throw new Exception();
@@ -202,7 +197,7 @@ public class EmployeeController{
 	 * 
 	 * Method For checking The Existence Of Employee
 	 */
-	@RequestMapping(value="/checkemployee.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/checkemployee.htm",method=RequestMethod.GET)
 	@ResponseBody
 	public String checkExistanceOfEmployee(@RequestParam("empNo")String employeeNo){
 		log.info("inside checkExistanceofEmployee()");
@@ -234,7 +229,7 @@ public class EmployeeController{
 	 * Method For Checking The Existence Of Employee Email
 	 */
 	
-	@RequestMapping(value="/checkempemail.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/checkempemail.htm",method=RequestMethod.GET)
 	@ResponseBody
 	public String checkExistanceOfEmployeeEmail(@RequestParam("email")String email){
 		log.info("inside checkExistanceofEmployeeEmail()");
@@ -266,7 +261,7 @@ public class EmployeeController{
 	 * 
 	 * Method FOr Checking the Existence Of Manager
 	 */
-	@RequestMapping(value="/checkmanager.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/checkmanager.htm",method=RequestMethod.GET)
 	@ResponseBody
 	public String checkExistanceOfManager(@RequestParam("empNo")String employeeNo){
 		log.info("inside checkExistanceofManager()");
@@ -303,7 +298,7 @@ public class EmployeeController{
 	 */
 	
 	@SuppressWarnings("unused")
-	@RequestMapping(value="/checkmanageremail.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/checkmanageremail.htm",method=RequestMethod.GET)
 	@ResponseBody
 	public String checkExistanceOfManagerEmail(@RequestParam("email")String email){
 		log.info("inside checkExistanceofManagerEmail()");
@@ -326,7 +321,7 @@ public class EmployeeController{
 			}	
 		}
 		catch(TimecardUserNotFoundException e){
-			log.info("No Email Exists,You Can Add Employee");
+			log.info("Timecard User Not Found");
 			return "success";
 		}
 		catch(EmployeeNotFoundException e){
@@ -340,44 +335,7 @@ public class EmployeeController{
 	}
 	
 	
-	/**
-	 * Created By Bhagya on October 28th,2014
-	 * @param totalResults
-	 * @param pageSize
-	 * @return
-	 * @throws Exception
-	 * 
-	 * Method for to get the total pages needed
-	 */
-	private Integer getTotalPagesNeededByRangeandResults(Integer totalResults,
-			Integer pageSize) throws Exception {
-		log.info("inside getTotalPagesNeededByRangeandResults()");
-		int pagesNeeded;
-		int result = totalResults / pageSize;
-		if (totalResults % pageSize > 0) {
-			pagesNeeded = result + 1;
-		} else {
-			pagesNeeded = result;
-		}
-		return pagesNeeded;
-	}
-	/**
-	 * Created By Bhagya On October 28th,2014
-	 * @param range,totalResults,firstREsult
-	 * @return
-	 * @throws
-	 * Method For to  get total results based on ranges
-	 */
-	private int getResultsOfLastPageFromRangeandTotalOrders(int range,
-			int totalResults, int firstResult) {
-		log.info("inside getOrdersOfLastPageFromRangeandTotalOrders()	");
-		int lastResult = firstResult + range - 1;
-		if (lastResult > totalResults) {
-			lastResult = (totalResults % range) + firstResult - 1;
-		}
-		return lastResult;
-	}
-
+	
 	/**
 	 * Created By Bhagya On October 28th,2014
 	 * @param map,page,pageSize,organizationId,authentication,employeeType,totalResults,employeeMessage,managerMessage
@@ -386,21 +344,18 @@ public class EmployeeController{
 	 * Method for viewing the all employees ie..both managers and employees
 	 */
 	
-	@RequestMapping(value="/viewemployees.htm",method=RequestMethod.GET)
+	/*@RequestMapping(value="/viewemployees.htm",method=RequestMethod.GET)
 	public String viewEmployeesAndManagers(Map<String, Object> map ,@RequestParam(value="page",required=false,defaultValue="0")Integer page,@RequestParam(value="range",required=false,defaultValue="5") Integer pageSize,
 			@RequestParam(value="organizationId",required=false) Integer organizationId,Authentication authentication,@RequestParam(value="employeeType",required=false) String employeeType,Integer totalResults,
 			@RequestParam(value="employeeMessage",required=false) String employeeMessage,@RequestParam(value="managerMessage",required=false) String managerMessage){
-		ArrayList<OrganizationDto> organizationDtos=null;
+		OrganizationDto organizationDto=null;
 		Boolean manager = null;
 		try{
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			 for(int i=0;i<organizationDtos.size();i++){
-				  organizationId=organizationDtos.get(i).getOrganizationId();
-				 
-			 }
-			ArrayList<EmployeeDto> employeeDtos= this.employeeService.getTheEmployeesAndManagers(organizationId, page,pageSize,employeeType);
+			 organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			ArrayList<EmployeeDto> employeeDtos= this.employeeService.getTheEmployeesAndManagers(organizationDto.getOrganizationId(), employeeType, listBeanDto.getPagerDto().getPageNo(), listBeanDto.getPagerDto().getRange(),
+														listBeanDto.getSortBy(),listBeanDto.getSearchBy(),listBeanDto.getSortDirection());
 			if(null==employeeType || employeeType.trim().length()<=0||employeeType.contentEquals("allemployees") ){
 				totalResults=this.employeeService.getTotalResultsOfEmployeesAndManagers(organizationId);
 				}
@@ -429,7 +384,7 @@ public class EmployeeController{
 			map.put("manager", manager);
 			map.put("employeeType", employeeType);
 			map.put("organizationId",organizationId);
-			map.put("organizations",organizationDtos);
+			map.put("organization",organizationDto);
 			map.put("employees", employeeDtos);
 			map.put("employeeMessage", employeeMessage);
 			map.put("managerMessage", managerMessage);
@@ -444,7 +399,7 @@ public class EmployeeController{
 		
 		catch(EmployeeNotFoundException e){
 			e.printStackTrace();
-			map.put("organizations",organizationDtos);
+			map.put("organization",organizationDto);
 			map.put("organizationId",organizationId);
 			String message = "Employees And Managers Are Not Found,You Can Add Employee or Manager";
 			map.put("message", message);
@@ -452,6 +407,92 @@ public class EmployeeController{
 			return "timecard/organization/employee/viewEmployees";
 		}
 		
+		catch(Exception e){
+			e.printStackTrace();
+			String message = "Error While Displaying Employees";
+			map.put("message", message);
+			map.put("title", message);
+			return "error";
+		}
+		
+		
+	}*/
+	/**
+	 * Created By Bhagya on Feb 27th,2015
+	 * @param map,page,pagesize
+	 * @return
+	 * 
+	 * Method For to Process the View Employees
+	 */
+	
+	@RequestMapping(value="org/viewemployees.htm")
+	public String viewEmployees(Map<String, Object> map,@ModelAttribute("displayListBean") DisplayListBeanDto listBeanDto,@RequestParam(value="status",required=false) String status,
+			@RequestParam(value="employeeType",required=false) String employeeType)
+	{
+		log.info("inside viewEmployees()");
+		Integer organizationId = null;
+		Integer totalResults;
+		Boolean manager = null;
+		OrganizationDto organizationDto=null;
+		try{
+			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+			String useremail=auth.getName();
+			organizationDto = this.organizationService.getOrganizationByUserEmail(useremail);
+			organizationId=organizationDto.getOrganizationId();
+			
+			if(null==listBeanDto.getSortBy()){
+				listBeanDto.setSortBy("employeeId");
+			}
+			ArrayList<EmployeeDto> employees= this.employeeService.getTheEmployeesAndManagers(organizationId, employeeType, listBeanDto.getPagerDto().getPageNo(), listBeanDto.getPagerDto().getRange(),
+					listBeanDto.getSortBy(),listBeanDto.getSearchBy(),listBeanDto.getSortDirection());
+			if(null==employeeType || employeeType.trim().length()<=0||employeeType.contentEquals("allemployees") ){
+				totalResults=this.employeeService.getTotalResultsOfEmployeesAndManagers(organizationId);
+				}
+			
+			else if(employeeType.contentEquals("employees")){
+				totalResults=this.employeeService.getTotalResultsOfEmployees(organizationId);
+				}
+			else{
+				totalResults=this.employeeService.getTotalResultsOfManagers(organizationId);
+				}
+			for(EmployeeDto emp:employees){
+				 manager=emp.getIsManager();
+				}
+			listBeanDto.getPagerDto().setTotalItems(totalResults);
+			int i=listBeanDto.getPagerDto().getFirstResult();
+			map.put("i", i);
+			map.put("status", status);
+			map.put("manager", manager);
+			map.put("employees", employees);
+			map.put("employeeType", employeeType);
+			map.put("organizationId",organizationId);
+			map.put("organization",organizationDto);
+			return "timecard/organization/employee/viewEmployees";
+		}
+		catch(TimecardUserNotFoundException e){
+			String message="User Not Found,Please Login Again..";
+			map.put("message", message);
+			map.put("title", message);
+			return "response";
+		}
+		catch(EmployeeNotFoundFilterException e){
+			map.put("organization",organizationDto);
+			map.put("organizationId",organizationId);
+			map.put("employeeType", employeeType);
+			String message = "No Employees or Managers Found For Search Criteria";
+			map.put("filterMsg", message);
+			map.put("title", message);
+			return "timecard/organization/employee/viewEmployees";
+		}
+		catch(EmployeeNotFoundException e){
+			map.put("organization",organizationDto);
+			map.put("organizationId",organizationId);
+			map.put("employeeType", employeeType);
+			String message = "Employees And Managers Are Not Found,You Can Add Employee or Manager";
+			map.put("message", message);
+			map.put("title", message);
+			return "timecard/organization/employee/viewEmployees";
+		}
 		catch(Exception e){
 			e.printStackTrace();
 			String message = "Error While Displaying Employees";
@@ -481,7 +522,7 @@ public class EmployeeController{
 	 * 		4.It redirects the successfully message to viewEmployees page
 	 */
 	
-	@RequestMapping(value="manager/add.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/addmanager.htm",method=RequestMethod.GET)
 	public String initiateAddOrganizationManager(Map<String, Object> map,@ModelAttribute("employeeDto") EmployeeDto employeeDto,Authentication authentication,
 			@RequestParam("employeeType") String employeeType,@RequestParam(value="employeeNo",required=false) String employeeNo,RedirectAttributes redAttributes) throws TimecardUserNotFoundException, OrganizationNotFoundException, DivisionNotFoundException{
 		
@@ -489,19 +530,15 @@ public class EmployeeController{
 		
 		Integer organizationId = null;
 		 EmployeeDto employee=null;
-		 ArrayList<OrganizationDto> organizationDtos=null;
+		 OrganizationDto organizationDto=null;
 		 ArrayList<DivisionDto> divisionDtos=null;
 		try{
 			Integer result=null;
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			 for(int i=0;i<organizationDtos.size();i++){
-				  organizationId=organizationDtos.get(i).getOrganizationId();
-				 
-			 }
-			 divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null, organizationId);
-			 map.put("organizations", organizationDtos);
+			 organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			 divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationDto.getOrganizationId(), null, null, null, null, true);
+			 map.put("organization", organizationDto);
 			 map.put("divisions",divisionDtos);
 			 employee=this.employeeService.getTheEmployeeByEmployeeNo(employeeNo);
 			 if(employee.getIsManager()==false){
@@ -509,10 +546,10 @@ public class EmployeeController{
 		 	}
 			 
 			 if(result>0){
-					String mngMsg="Organization Manager Added Successfully";
-					redAttributes.addFlashAttribute("mngMsg",
-							mngMsg);
-					return "redirect:/employee/viewemployees.htm?organizationId="+organizationId+"&managerMessage="+mngMsg+"&employeeType="+employeeType;
+					String status="Organization Manager Added Successfully";
+					redAttributes.addFlashAttribute("status",
+							status);
+					return "redirect:/org/viewemployees.htm?organizationId="+organizationId+"&status="+status+"&employeeType="+employeeType;
 		 	}
 			 else{
 					throw new Exception();
@@ -528,7 +565,7 @@ public class EmployeeController{
 			return "response";
 		}
 		catch(EmployeeNotFoundException e){
-			 map.put("organizations", organizationDtos);
+			 map.put("organization", organizationDto);
 			 map.put("divisions",divisionDtos);
 			return "timecard/organization/employee/manager/addOrganizationManager";
 		}
@@ -550,29 +587,29 @@ public class EmployeeController{
 	 */
 	
 	
-	@RequestMapping(value="manager/add.htm",method=RequestMethod.POST)
+	@RequestMapping(value="org/addmanager.htm",method=RequestMethod.POST)
 	public String addOrganizationManager(Map<String,Object> map,@Valid @ModelAttribute("employeeDto") EmployeeDto employeeDto,BindingResult validResult,
 			RedirectAttributes redAttributes,
 			@RequestParam("employeeType") String employeeType){
 		log.info("inside addOrganizationManager()");
-		System.out.println("inside post method");
 		try{
+			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+			String useremail=auth.getName();
+			 OrganizationDto organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			 Integer organizationId=organizationDto.getOrganizationId();
 			if (validResult.hasErrors()) {
-				Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-				String useremail=auth.getName();
-				 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-				 ArrayList<DivisionDto> divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null, employeeDto.getOrganization().getOrganizationId());
+				 ArrayList<DivisionDto> divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationId, null, null, null, null, true);
 				map.put("divisions", divisionDtos);
-				map.put("organizations",organizationDtos);
+				map.put("organization",organizationDto);
 				return "timecard/organization/employee/manager/addOrganizationManager";
 			}
 			
-			Integer result=this.employeeService.savingAddedManagerDetails(employeeDto,employeeDto.getDivision().getDivisionId(),employeeDto.getOrganization().getOrganizationId());
+			Integer result=this.employeeService.savingAddedManagerDetails(employeeDto,employeeDto.getDivision().getDivisionId(),organizationId);
 			if(result>0){
-				String mngMsg="Organization Manager Added Successfully";
-				redAttributes.addFlashAttribute("mngMsg",
-						mngMsg);
-				return "redirect:/employee/viewemployees.htm?organizationId="+employeeDto.getOrganization().getOrganizationId()+"&managerMessage="+mngMsg+"&employeeType="+employeeType;
+				String status="Organization Manager Added Successfully";
+				redAttributes.addFlashAttribute("status",
+						status);
+				return "redirect:/org/viewemployees.htm?organizationId="+organizationId+"&status="+status+"&employeeType="+employeeType;
 			}
 			else{
 				throw new Exception();
@@ -604,17 +641,17 @@ public class EmployeeController{
 	 * Method For removing the organization manager
 	 */
 	
-	@RequestMapping(value="manager/remove.htm")
+	@RequestMapping(value="org/removemanager.htm")
 	public String removeOrganizationManager(@RequestParam("employeeType") String employeeType,@RequestParam("employeeNo") String employeeNo,RedirectAttributes redAttributes,Map<String, Object> map){
 		log.info("inside removeOrganizationManager()");
 		try{
 		EmployeeDto employeeDto=this.employeeService.getTheEmployeeByEmployeeNo(employeeNo);
 		Integer result=this.employeeService.removeOrganizationManager(employeeDto);
 		if(result>0){
-			String mngMsg="Manager Removed Successfully";
-			redAttributes.addFlashAttribute("removeManagerMessage",
-					mngMsg);
-			return "redirect:/employee/viewemployees.htm?managerMessage="+mngMsg+"&employeeType="+employeeType;
+			String status="Manager Removed Successfully";
+			redAttributes.addFlashAttribute("status",
+					status);
+			return "redirect:/org/viewemployees.htm?status="+status+"&employeeType="+employeeType;
 			}
 			else{
 				throw new Exception();
@@ -636,23 +673,19 @@ public class EmployeeController{
 	 * Method For Initiating The Edit Employee
 	 */
 	
-	@RequestMapping(value="/editemployee.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/editemployee.htm",method=RequestMethod.GET)
 	public String editEmployee(Map<String, Object> map,@RequestParam("empNo") String empNo,@ModelAttribute("editEmployeeDto") EmployeeDto employeeDto,Authentication authentication){
 		log.info("inside editEmployee()");
-		 ArrayList<OrganizationDto> organizationDtos=null;
-		 Integer organizationId=null;
+		 OrganizationDto organizationDto=null;
 		try{
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			 for(int i=0;i<organizationDtos.size();i++){
-				  organizationId=organizationDtos.get(i).getOrganizationId();
-				 
-			 }
+			 organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			
 			EmployeeDto employee=this.employeeService.getTheEmployeeByEmployeeNo(empNo);
-			ArrayList<DivisionDto> divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null, organizationId);
+			ArrayList<DivisionDto> divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationDto.getOrganizationId(), null, null, null, null, true);
 			map.put("divisions", divisionDtos);
-			map.put("organizations",organizationDtos);
+			map.put("organization",organizationDto);
 			
 			map.put("employee",employee);
 			return "timecard/organization/employee/editEmployee";
@@ -681,28 +714,28 @@ public class EmployeeController{
 	 * Method For saving the updated or edited employee details
 	 */
 	
-	@RequestMapping(value="/editemployee.htm",method=RequestMethod.POST)
+	@RequestMapping(value="org/editemployee.htm",method=RequestMethod.POST)
 	public String editingTheEmployee(@RequestParam("employeeType") String employeeType,@Valid @ModelAttribute("editEmployeeDto") EmployeeDto editEmployeeDto,BindingResult validResult,Map<String, Object> map,
 			RedirectAttributes redAttributes){
 		log.info("inside editingTheEmployee()");		
 		try{
+			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+			String useremail=auth.getName();
+			 OrganizationDto organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			 Integer organizationId=organizationDto.getOrganizationId();
 			if (validResult.hasErrors()) {
-				Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-				String useremail=auth.getName();
-				 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-				 ArrayList<DivisionDto> divisionDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(null, null, editEmployeeDto.getOrganization().getOrganizationId());
+				 ArrayList<DivisionDto> divisionDtos=this.divisionService.getDivisionsBasedOnOrganizationId(organizationId, null, null, null, null, true);
 				map.put("divisions", divisionDtos);
-				map.put("organizations",organizationDtos);
+				map.put("organization",organizationDto);
 				return "timecard/organization/employee/editEmployee";
 				}
-			
-			Integer result=this.employeeService.savingUpdatedEmployeeDetails(editEmployeeDto, editEmployeeDto.getDivision().getDivisionId(), editEmployeeDto.getOrganization().getOrganizationId());
+			Integer result=this.employeeService.savingUpdatedEmployeeDetails(editEmployeeDto, editEmployeeDto.getDivision().getDivisionId(), organizationId);
 			
 			if(result>0){
-			String editMsg="Employee Details Updated Successfully";
-			redAttributes.addFlashAttribute("editMsg",
-					editMsg);
-			return "redirect:/employee/viewemployees.htm?organizationId="+editEmployeeDto.getOrganization().getOrganizationId()+"&employeeMessage="+editMsg+"&employeeType="+employeeType;
+			String status="Employee Details Updated Successfully";
+			redAttributes.addFlashAttribute("status",
+					status);
+			return "redirect:/org/viewemployees.htm?organizationId="+organizationId+"&status="+status+"&employeeType="+employeeType;
 			}
 			else{
 				throw new Exception();

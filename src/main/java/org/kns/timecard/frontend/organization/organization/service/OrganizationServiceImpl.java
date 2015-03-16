@@ -14,6 +14,7 @@ import org.kns.timecard.backend.admin.dao.OrganizationDao;
 import org.kns.timecard.backend.organization.employee.dao.EmployeeDao;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 import org.kns.timecard.backend.organization.organization.model.Organization;
+import org.kns.timecard.backend.organization.organization.model.OrganizationConfig;
 import org.kns.timecard.backend.organization.organization.model.TimeCardPeriod;
 import org.kns.timecard.backend.timecarduser.dao.UserDao;
 import org.kns.timecard.backend.timecarduser.model.Roles;
@@ -97,40 +98,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	/**
 	 * Created by Bhagya on October 15, 2014
 	 * @param organizationDto
@@ -260,23 +227,43 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * 2  Get Organization of User
 	 * 3. set Config Parameters Update
 	 */
-	public Integer processSavingConfigurationOfOrganization(OrganizationConfigDto configDto,Integer userId)throws Exception{
+	@Transactional
+	public Integer processSavingConfigurationOfOrganization(Integer userId,String organizationName,String timecardPeriod,String weekEndingDay,String minHoursPerWeek,
+			String maxHoursPerWeek,String whineList)throws Exception{
 		 log.info("inside processSavingConfigurationOfOrganization()");
 		
+		 Organization organization=this.organizationDao.getOrganizationByUserId(userId);
+		 OrganizationConfig configPeriod=new OrganizationConfig();
+		 configPeriod.setOrganization(organization);
+		 configPeriod.setName("timecardPeriod");
+		 configPeriod.setValue(timecardPeriod);
+		 this.organizationDao.saveorUpdateOrganizationConfiguration(configPeriod);
 		 
-		/* TimecardUser timecardUser=this.userDao.getUserByUserId(userId);
-		Organization organization=this.organizationDao.getOrganizationByAdmin(timecardUser);
-		 organization.setMaxHoursPerWeek(configDto.getMaxHoursPerWeek());
-		 organization.setMinHoursPerWeek(configDto.getMinHoursPerWeek());
-		 organization.setWeekEndingDay(configDto.getWeekEndingDay());
-		 organization.setWhineList(configDto.getWhineList());
-		 TimeCardPeriod period=this.organizationDao.getTimeCardPeriodById(configDto.getTimecardPeriod().getId());
-		 organization.setTimeCardPeriod(period);
-		 organization.setModifiedBy(timecardUser);
-		 organization.setModifiedDate(new Date());
-		 Integer result =this.organizationDao.saveorUpdateOrganization(organization);
-		 return result;*/
-		 return null;
+		 OrganizationConfig configWeek=new OrganizationConfig();
+		 configWeek.setOrganization(organization);
+		 configWeek.setName("weekEndingDay");
+		 configWeek.setValue(weekEndingDay);
+		 this.organizationDao.saveorUpdateOrganizationConfiguration(configWeek);
+		 
+		 OrganizationConfig configMinHours=new OrganizationConfig();
+		 configMinHours.setOrganization(organization);
+		 configMinHours.setName("minHoursPerWeek");
+		 configMinHours.setValue(minHoursPerWeek);
+		 this.organizationDao.saveorUpdateOrganizationConfiguration(configMinHours);
+		 
+		 OrganizationConfig configMaxHours=new OrganizationConfig();
+		 configMaxHours.setOrganization(organization);
+		 configMaxHours.setName("maxHoursPerWeek");
+		 configMaxHours.setValue(maxHoursPerWeek);
+		 this.organizationDao.saveorUpdateOrganizationConfiguration(configMaxHours);
+		 
+		 OrganizationConfig configWhineList=new OrganizationConfig();
+		 configWhineList.setOrganization(organization);
+		 configWhineList.setName("whineList");
+		 configWhineList.setValue(whineList);
+		 Integer savedResult=this.organizationDao.saveorUpdateOrganizationConfiguration(configWhineList);
+		
+		 return savedResult;
 	 }
 	/**
 	 * Created By Bhagya on October 21st ,2014
@@ -298,13 +285,53 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 		return organizationDtos;		
 	}
+	/**
+	 * Created By Bhagya On Feb 24th,2015
+	 * @param organizationDto
+	 * @return
+	 * @throws OrganizationNotFoundException
+	 * @throws Exception
+	 * 
+	 * METHOD for saving actiavtion details of organization
+	 */
+	
+	public Integer saveActivationDetailsOfOrganization(ArrayList<OrganizationDto> organizationDto) throws OrganizationNotFoundException,Exception{
+		log.info("saveActivationOfOrganization()");
+		Integer saveResult=0;
+		for(OrganizationDto orgDto:organizationDto){
+		Organization organization=this.organizationDao.getOrganizationById(orgDto.getOrganizationId());
+		organization.setIsActive(orgDto.getIsActive());
+		saveResult=this.organizationDao.saveorUpdateOrganization(organization);
+		}
+		return saveResult;
+	}
 	
 	
+
+	/**
+	 * Created by Bhagya on Feb 25th, 2015
+	 * Method to get Organization by User Id
+	 */
+	public OrganizationDto getOrganizationByUserId(Integer userId)throws OrganizationNotFoundException{
+		log.info("inside getOrganizationByUserId()");
+		Organization organization=this.organizationDao.getOrganizationByUserId(userId);
+		OrganizationDto organizationDto=OrganizationDto.populateOrganizationDto(organization);
+		return organizationDto;
+	}
 	
-	
-	
-	
-	
+
+	/**
+	 * Created by Bhagya on Feb 25th, 2015
+	 * Method to get Organization by User Id
+	 * @throws TimecardUserNotFoundException 
+	 */
+	public OrganizationDto getOrganizationByUserEmail(String userEmail)throws OrganizationNotFoundException, TimecardUserNotFoundException{
+		log.info("inside getOrganizationByUserEmail()");
+		TimecardUser timeCardUser=this.userDao.getTimecardUserByEmail(userEmail);
+		Organization organization=this.organizationDao.getOrganizationByUserEmail(timeCardUser);
+		OrganizationDto organizationDto=OrganizationDto.populateOrganizationDto(organization);
+		return organizationDto;
+	}
 	
 	
 }

@@ -131,13 +131,13 @@
 	 */
 	
 		function validateConfiguration(){
+			alert("inside validation");
 			var timecardPeriod=$('#timecardPeriod').val();
 			var weekEndingDay=$('#weekEndingDay').val();
 			var minHours=$('#minHoursPerWeek').val();
 			var maxHours=$('#maxHoursPerWeek').val();
 			var whineList=$('#whineList').val();
 			var numFilter=/^[0-9.]+$/;
-			var whineFilter=/^[0-9a-zA-Z ]+$/;
 			var a,b,c,d,e=true;
 			if(timecardPeriod=='--Select--'||timecardPeriod==''|| timecardPeriod==null){
 				$('#timecardperiod_error').html('*Timecard Period Should be select');
@@ -179,12 +179,8 @@
 				$('#maxHoursPerWeek_error').html('');
 				d=true;
 			}
-			if(whineList==null|| whineList==''){
-				$('#whineList_error').html('*WhineList  Should be entered');
-				e=false;
-			}
-			else if(whineFilter.test(whineList)==false){
-				$('#whineList_error').html('*Special Characters Should Not Allowed');
+			if(whineList=='--Select--'||whineList==null|| whineList==''){
+				$('#whineList_error').html('*WhineList Should be select');
 				e=false;
 			}
 			else{
@@ -199,4 +195,54 @@
 			}
 		}
 		
+		/**
+		 * Created By Bhagya On Feb 24th,2015
+		 * Function For Validating the Organization Settings page
+		 *  */
+		function validateOrgSettings(){
+			var isLogsSaved=$('#isLogsSaved').val();
+			var isUserLogsSaved=$('#isUserLogsSaved').val();
+			var status=$('#orgStatus').val();
+			var statusDate=$('#statusDate').val();
+			var a,b,c,d=true;
+			if(isLogsSaved=='--Select--'||isLogsSaved==''|| isLogsSaved==null){
+				$('#isLogsSaved_error').html('*Logs Savings Should be select');
+				a=false;
+			}
+			else{
+				$('#isLogsSaved_error').html('');
+				a=true;
+			}
+			if(isUserLogsSaved=='--Select--'||isUserLogsSaved==''|| isUserLogsSaved==null){
+				$('#isUserLogsSaved_error').html('*User Logs Savings Should be select');
+				b=false;
+			}
+			else{
+				$('#isUserLogsSaved_error').html('');
+				b=true;
+			}
+			if(status=='--Select--'||status==''|| status==null){
+				$('#status_error').html('*User Logs Savings Should be select');
+				c=false;
+			}
+			else{
+				$('#status_error').html('');
+				c=true;
+			}
+			if(statusDate==''|| statusDate==null){
+				$('#statusDate_error').html('*Status Should be Entered');
+				d=false;
+			}
+			else{
+				$('#statusDate_error').html('');
+				d=true;
+			}
+			
+			if(a==true&& b==true&& c==true && d==true){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		

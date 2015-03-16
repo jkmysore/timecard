@@ -284,9 +284,26 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 		return changeResult;
 	}
 	
+	/**
+	 * Created By Bhagya On Feb 24th,2015
+	 * @param organizationDto
+	 * @return
+	 * @throws OrganizationNotFoundException
+	 * @throws Exception
+	 * 
+	 * Method For saving the deatils of organization settings into db
+	 */
 	
-	
-	
+	public Integer saveOrganizationSettings(OrganizationDto organizationDto) throws OrganizationNotFoundException,Exception{
+		log.info("inside saveOrganizationSettings()");
+		Organization organization=this.adminDao.getOrganizationById(organizationDto.getOrganizationId());
+		organization.setIsLogsSaved(organizationDto.getIsLogsSaved());
+		organization.setIsUserLogsSaved(organizationDto.getIsUserLogsSaved());
+		organization.setStatus(organizationDto.getStatus());
+		organization.setStatusDate(organizationDto.getStatusDate());
+		Integer saveResult=this.adminDao.saveorUpdateOrganization(organization);
+		return saveResult;
+	}
 	
 	
 	

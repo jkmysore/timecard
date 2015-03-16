@@ -15,6 +15,7 @@ import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 
@@ -130,7 +131,7 @@ public class LoginController {
 	
 	
 
-	/*
+	/**
 	 * Created by Jeevan on June 26, 2014
 	 * Method to handle Logout COndition
 	 * Removes all cache and send to logout page
@@ -163,7 +164,33 @@ public class LoginController {
 		}
 	}
 	
-	
+	/**
+	 * Created by Bhagya on Feb 25th, 2015
+	 * Method to handle First Time Visits  of a User.
+	 * 
+	 */
+	@RequestMapping("/firstlogin.htm")
+	public String handlePostFirstLoginConfigurations(Map<String, Object> map, @RequestParam("userId")Integer userId){
+		log.info("handlePostFirstLoginConfigurations()");
+		try{
+			Integer updateResult=this.userService.handleFirstTimeVisitofUser(userId);
+			if(updateResult>0){
+				map.put("firstVisit", true);
+				return "redirect:/home.htm";
+			}
+			else{
+				throw new Exception();
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			String message="Error While Redirecting User to Home Page";
+			log.error(message+" "+e.toString());
+			map.put("message", message);
+			map.put("title", message);
+			return "error";
+		}
+	}
 	
 	
 	

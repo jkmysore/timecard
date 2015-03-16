@@ -9,9 +9,13 @@ import javax.annotation.Resource;
 import org.kns.timecard.backend.admin.dao.OrganizationDao;
 import org.kns.timecard.backend.organization.division.dao.DivisionDao;
 import org.kns.timecard.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundFilterException;
+import org.kns.timecard.exception.HolidayNotFoundException;
 import org.kns.timecard.backend.organization.division.model.Division;
+import org.kns.timecard.backend.organization.holiday.model.Holiday;
 import org.kns.timecard.backend.organization.organization.model.Organization;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
+import org.kns.timecard.frontend.organization.holiday.dto.HolidayDto;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.springframework.stereotype.Service;
 import org.apache.log4j.Logger;
@@ -66,7 +70,7 @@ public class DivisionServiceImpl implements DivisionService {
 	 * 
 	 * Method For Getting All Divisions Based On Organization Id
 	 */
-	public ArrayList<DivisionDto> getAllDivisionsBasedOnOrganizationId(Integer page,Integer pageSize,Integer organizationId) throws DivisionNotFoundException{
+	/*public ArrayList<DivisionDto> getAllDivisionsBasedOnOrganizationId(Integer page,Integer pageSize,Integer organizationId) throws DivisionNotFoundException{
 		ArrayList<Division> divisions=this.divisionDao.getAllDivisionsBasedOnOrganizationIdFromDB(page, pageSize,organizationId);
 		ArrayList<DivisionDto> divisionsDtos=new ArrayList<DivisionDto>();
 		for(Division division:divisions){
@@ -80,6 +84,26 @@ public class DivisionServiceImpl implements DivisionService {
 		}
 				
 				return divisionsDtos;
+		
+	}*/
+	/**
+	 * Created By Bhagya On Feb 27th,2015
+	 * @param organizationId,page,pagesize
+	 * @return array list of division dto
+	 * @throws DivisionNotFoundException
+	 * 
+	 *  Method for Getting The list of  Divisions Details From Db
+	 * @throws DivisionNotFoundFilterException 
+	 */
+	public ArrayList<DivisionDto> getDivisionsBasedOnOrganizationId(Integer organizationId,Integer pageNo,Integer pageSize,String sortBy,String searchBy,Boolean ascending) throws DivisionNotFoundException, DivisionNotFoundFilterException{
+		log.info("inside getDivisionsBasedOnOrganizationId()");
+		ArrayList<Division> divisions=this.divisionDao.getDivisionsBasedOnOrganizationId(organizationId, pageNo, pageSize, sortBy, searchBy, ascending);
+		ArrayList<DivisionDto> divisionDtos=new ArrayList<DivisionDto>();
+		for(Division division:divisions){
+			DivisionDto divisionDto=DivisionDto.populateDivisionDto(division);
+			divisionDtos.add(divisionDto);
+		}
+		return divisionDtos;
 		
 	}
 	

@@ -19,7 +19,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="kns_timcard_organization_config")
+@Table(name="kns_timecard_organization_config")
 public class OrganizationConfig  implements Serializable{
 
 	private static final long serialVersionUID = 1L;

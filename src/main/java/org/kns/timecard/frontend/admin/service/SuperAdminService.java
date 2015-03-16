@@ -13,5 +13,6 @@ public interface SuperAdminService {
 	public OrganizationDto getOrganizationByOrganizationId(Integer organizationId)throws Exception;
 	public Integer editOrganizationByAdmin(OrganizationDto organizationDto)throws Exception;
 	public Integer changeOrganizationStatus(Integer organizationId,Boolean status)throws Exception;
+	public Integer saveOrganizationSettings(OrganizationDto organizationDto) throws OrganizationNotFoundException,Exception;
 	
 }

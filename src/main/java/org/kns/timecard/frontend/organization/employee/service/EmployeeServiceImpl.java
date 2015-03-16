@@ -10,6 +10,7 @@ import org.kns.timecard.backend.organization.division.dao.DivisionDao;
 import org.kns.timecard.backend.organization.division.model.Division;
 import org.kns.timecard.backend.organization.employee.dao.EmployeeDao;
 import org.kns.timecard.exception.EmployeeNotFoundException;
+import org.kns.timecard.exception.EmployeeNotFoundFilterException;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 import org.kns.timecard.backend.organization.organization.model.Organization;
 import org.kns.timecard.backend.timecarduser.dao.UserDao;
@@ -56,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	 */
 	public Integer savingAddedEmployeeDetails(EmployeeDto employeeDto,Integer divisionId,Integer organizationId) throws Exception{
 		log.info("inside savingAddedEmployeeDetails");
+		System.out.println("inside saving the employee details of service method");
 		Employee employee=new Employee();
 		employee.setEmployeeNo(employeeDto.getEmployeeNo());
 		employee.setStartDate(employeeDto.getStartDate());
@@ -69,7 +71,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 		timecardcredentials.setPassword(encryPassword);
 		timecardcredentials.setUsername(employeeDto.getTimecardUser().getTimeCardCredentials().getUsername());
 		user.setTimeCardCredentials(timecardcredentials);
+		
 		this.userDao.saveOrUpdateTimecardCredentials(timecardcredentials);
+		System.out.println("user details "+user.getTimeCardCredentials().getEmail() +"dateofbirth "+user.getDateofBirth()+"firstname "+user.getFirstName()+"lastname "+user.getLastName());
 		this.userDao.saveOrUpdateTimecardUser(user);
 		employee.setTimecardUser(user);
 		employee.setIsManager(false);
@@ -101,13 +105,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 	 * @throws EmployeeNotFoundException
 	 * 
 	 * Method For Get the Employees and Managers
+	 * @throws EmployeeNotFoundFilterException 
 	 */
-	public ArrayList<EmployeeDto> getTheEmployeesAndManagers(Integer organizationId,Integer page,Integer pageSize,String employeeType) throws EmployeeNotFoundException{
+	public ArrayList<EmployeeDto> getTheEmployeesAndManagers(Integer organizationId,String employeeType,Integer pageNo,Integer pageSize,String sortBy,String searchBy,Boolean ascending) throws EmployeeNotFoundException, EmployeeNotFoundFilterException{
 		log.info("inside getemployeesAndManagers()");
-		ArrayList<Employee> employees=this.employeeDao.getAllEmployeesByOrganizationId(organizationId,page,pageSize);
+		
+		ArrayList<Employee> employees=this.employeeDao.getEmployeesBasedOnOrganizationId(organizationId, pageNo, pageSize, sortBy, searchBy, ascending,employeeType);
+	
 		ArrayList<EmployeeDto> employeeDtos=new ArrayList<EmployeeDto>();
 		for(Employee employee:employees ){
-			if(employeeType==null ||employeeType.contentEquals("allemployees")||employeeType.trim().length()<=0 ){
+			/*if(employeeType==null ||employeeType.contentEquals("allemployees")||employeeType.trim().length()<=0 ){*/
 				EmployeeDto employeeDto=new EmployeeDto();
 				employeeDto.setEmployeeNo(employee.getEmployeeNo());
 				employeeDto.setTimecardUser(TimecardUserDto.populateTimeCardUser(employee.getTimecardUser()));
@@ -115,12 +122,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 				employeeDto.setIsManager(employee.getIsManager());
 			
 				employeeDtos.add(employeeDto);
-			}
+			/*}*/
 			
-			else if(null!=employeeType){
+			/*else if(null!=employeeType){
 				if(employeeType.contentEquals("managers")){
 					if(employee.getIsManager()==true){
 					EmployeeDto employeeDto=new EmployeeDto();
+					System.out.println("if it is manager means"+employee.getEmployeeNo());
 					employeeDto.setEmployeeNo(employee.getEmployeeNo());
 					employeeDto.setTimecardUser(TimecardUserDto.populateTimeCardUser(employee.getTimecardUser()));
 					employeeDto.setStartDate(employee.getStartDate());
@@ -133,6 +141,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 				else{
 				if(employee.getIsManager()==false){
 					EmployeeDto employeeDto=new EmployeeDto();
+					System.out.println("inside if employees means"+employee.getEmployeeNo());
 					employeeDto.setEmployeeNo(employee.getEmployeeNo());
 					employeeDto.setTimecardUser(TimecardUserDto.populateTimeCardUser(employee.getTimecardUser()));
 					employeeDto.setStartDate(employee.getStartDate());
@@ -141,8 +150,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 					employeeDtos.add(employeeDto);
 					
 				}
-			}
-			}
+			}*/
+			/*}*/
 		}
 			
 			return employeeDtos;
@@ -303,7 +312,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		user.setDateofBirth(employeeDto.getTimecardUser().getDateofBirth());
 		user.setFirstName(employeeDto.getTimecardUser().getFirstName());
 		user.setLastName(employeeDto.getTimecardUser().getLastName());
-		TimeCardUserCredentials timecardcredentials=new TimeCardUserCredentials();
+		TimeCardUserCredentials timecardcredentials=user.getTimeCardCredentials();
 		timecardcredentials.setEmail(employeeDto.getTimecardUser().getTimeCardCredentials().getEmail());
 		timecardcredentials.setUsername(employeeDto.getTimecardUser().getTimeCardCredentials().getUsername());
 		user.setTimeCardCredentials(timecardcredentials);
@@ -313,6 +322,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employee.setIsManager(employeeDto.getIsManager());
 		Division division=this.divisionDao.getDivisionByDivisionId(divisionId);
 		employee.setDivision(division);
+		System.out.println("organization Id at service"+organizationId);
 		Organization organization=this.organizationDao.getOrganizationById(organizationId);
 		employee.setOrganization(organization);
 		Integer savedResult=this.employeeDao.saveorUpdateEmployeeDetails(employee);

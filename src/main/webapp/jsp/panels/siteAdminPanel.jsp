@@ -11,8 +11,8 @@
         
         <li class="nav-parent" id="organization" ><a href=""><i class="fa fa-edit"></i> <span>Organization</span></a>
           <ul class="children">
-            <li><a href="${pageContext.request.contextPath}/organization/edit.htm?userId=${sessionScope.userId}"><i class="fa fa-caret-right"></i> Edit </a></li>
-            <li><a href="${pageContext.request.contextPath}/organization/configuration.htm?userId=${sessionScope.userId}"><i class="fa fa-caret-right"></i> Configuration</a></li>
+            <li><a href="${pageContext.request.contextPath}/org/edit.htm?userId=${sessionScope.userId}"><i class="fa fa-caret-right"></i> Edit </a></li>
+            <li><a href="${pageContext.request.contextPath}/org/configuration.htm?userId=${sessionScope.userId}"><i class="fa fa-caret-right"></i> Configuration</a></li>
             
           </ul>
        <%--  </li>
@@ -24,7 +24,7 @@
          	
          </li>
          --%>
-         <li  id="Employee"><a href="${pageContext.request.contextPath}/employee/viewemployees.htm"><i class="fa fa-edit"></i> <span>Employees</span></a>
+         <li  id="Employee"><a href="${pageContext.request.contextPath}/org/viewemployees.htm"><i class="fa fa-edit"></i> <span>Employees</span></a>
          	<%-- <ul class="children">
             <li><a href="${pageContext.request.contextPath}/organization/addemployee.htm"><i class="fa fa-caret-right"></i> Add Employee</a></li>
             <li><a href="${pageContext.request.contextPath}/organization/viewemployees.htm"><i class="fa fa-caret-right"></i> View</a></li>
@@ -68,7 +68,7 @@
             <li><a href="${pageContext.request.contextPath}/org/viewholidays.htm"><i class="fa fa-caret-right"></i> Holidays </a></li>
            </ul>
         </li>
-        <li  id="divisions"><a href="${pageContext.request.contextPath}/division/viewdivisions.htm"><i class="fa fa-edit"></i> <span>Divisions</span></a>
+        <li  id="divisions"><a href="${pageContext.request.contextPath}/org/viewdivisions.htm"><i class="fa fa-edit"></i> <span>Divisions</span></a>
           <%-- <ul class="children">
             <li><a href="${pageContext.request.contextPath}/organization/departments/adddepartment.htm"><i class="fa fa-caret-right"></i> Add Department </a></li>
             <li><a href="${pageContext.request.contextPath}/organization/departments/viewdepartments.htm"><i class="fa fa-caret-right"></i> View Departments</a></li>

@@ -3,6 +3,7 @@ package org.kns.timecard.frontend.organization.division.service;
 import java.util.ArrayList;
 
 import org.kns.timecard.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundFilterException;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 /**
  * 
@@ -13,7 +14,8 @@ import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
  */
 public interface DivisionService{
 	public Integer savingTheAddedorUpdatedDivisionDetails(DivisionDto divisionDto,Integer organizationId) throws Exception;
-	public ArrayList<DivisionDto> getAllDivisionsBasedOnOrganizationId(Integer page,Integer pageSize,Integer organizationId) throws DivisionNotFoundException;
+	//public ArrayList<DivisionDto> getAllDivisionsBasedOnOrganizationId(Integer page,Integer pageSize,Integer organizationId) throws DivisionNotFoundException;
 	public Integer getDivisionTotalResults() throws Exception;
 	public DivisionDto getDivisionDetailsByDivisionId(Integer divisionId) throws DivisionNotFoundException;
+	public ArrayList<DivisionDto> getDivisionsBasedOnOrganizationId(Integer organizationId,Integer pageNo,Integer pageSize,String sortBy,String searchBy,Boolean ascending) throws DivisionNotFoundException, DivisionNotFoundFilterException;
 }

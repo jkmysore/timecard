@@ -2,10 +2,12 @@ package org.kns.timecard.backend.timecarduser.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,6 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Proxy;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * 
@@ -22,6 +27,7 @@ import javax.persistence.TemporalType;
  *
  */
 @Entity
+@Proxy(lazy=false)
 @Table(name="kns_timecard_user")
 public class TimecardUser implements Serializable {
 

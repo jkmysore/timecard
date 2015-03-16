@@ -1,6 +1,8 @@
 package org.kns.timecard.common.security;
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -9,7 +11,11 @@ import java.util.HashSet;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.kns.timecard.exception.OrganizationNotActiveException;
+import org.kns.timecard.exception.OrganizationNotFoundException;
 import org.kns.timecard.exception.TimecardUserNotFoundException;
+import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
+import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
 import org.kns.timecard.frontend.timecarduser.dto.RolesDto;
 import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
@@ -36,6 +42,11 @@ public class UserDetailServiceImpl implements UserDetailsService{
 	
 	@Resource(name="userService")
 	private UserService userService;
+	
+	@Resource(name="organizationService")
+	private OrganizationService organizationService;
+	
+	
 	
 	private static Logger log=Logger.getLogger(UserDetailServiceImpl.class);
 	
@@ -79,16 +90,23 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		System.out.println("CALLED");
 		log.info("inside loadUserByUsername()");
 		TimecardUserDto userEntity=null;
+		ArrayList<OrganizationDto> organizationDto=null;
 		try{
-			userEntity=this.userService.getTimeCardUserByEmailorUsername(username);			
+			userEntity=this.userService.getTimeCardUserByEmailorUsername(username);
+			 organizationDto=this.organizationService.getOrganizationsByAdminorManager(userEntity.getTimeCardCredentials().getEmail());
 		}
 		catch(TimecardUserNotFoundException e){
 			log.error("Failed to get User by Username "+e.toString());
+		} 
+		catch (OrganizationNotFoundException e) {
+			log.error("Failed to get Organization by Email "+e.toString());
 		}
 		
 		if (userEntity == null){
 	    	throw new UsernameNotFoundException("user not found");
 		}
+		
+		
 				
 		boolean flag=true;		
 		boolean enabled=flag;
@@ -132,8 +150,56 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		}
 		
 		// Handling User Role 
+		//Handling The Organization Status Of Active ,added By bhagya On Feb24th,2015
+			
 		 Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 		 for(RolesDto roleDto:userEntity.getTimeCardCredentials().getRole()){
+			 if(!roleDto.getRoleName().equalsIgnoreCase("ROLE_SUPER_ADMIN")){
+				 for(OrganizationDto orgDto:organizationDto){
+					 ArrayList<OrganizationDto> organizationDtos=new ArrayList<OrganizationDto>();
+					 	 	SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM/dd/yyyy");
+							String statusDate=simpleDateFormat.format(orgDto.getStatusDate());
+							String currentDate=	 simpleDateFormat.format(new Date());
+							if(orgDto.getIsActive() && orgDto.getStatus().equalsIgnoreCase("block")){
+								if(statusDate.equalsIgnoreCase(currentDate)){
+									orgDto.setIsActive(false);
+							 		organizationDtos.add(orgDto);
+							 		try{
+							 		 this.organizationService.saveActivationDetailsOfOrganization(organizationDtos);
+							 		}
+							 		catch(OrganizationNotFoundException e){
+							 			log.error("Failed to get Organization "+e.toString());
+							 		} catch (Exception e) {
+							 			log.error("Exception While getting Organization "+e.toString());
+										
+									}
+							 	}
+						 }
+						 else if(!orgDto.getIsActive() && orgDto.getStatus().equalsIgnoreCase("allow")){
+								if(statusDate.equalsIgnoreCase(currentDate)){
+										orgDto.setIsActive(true);
+						 				organizationDtos.add(orgDto);
+						 				try{
+						 				 this.organizationService.saveActivationDetailsOfOrganization(organizationDtos);
+						 				}
+						 				catch(OrganizationNotFoundException e){
+						 					log.error("Failed to get Organization  "+e.toString());
+						 				} 
+						 				catch (Exception e) {
+						 					log.error("Exception While getting Organization "+e.toString());
+											
+										}
+						 		}
+							
+						}
+						
+						if(!orgDto.getIsActive()){
+						 throw new OrganizationNotActiveException("Organization Not Found");
+						}
+				}
+			}
+				 //
+			 
 			 for(String role: UserRoles.valueOf(roleDto.getRoleName()).getRoles()){
 				 authorities.add(new GrantedAuthorityImpl(role));
 			 }

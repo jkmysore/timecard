@@ -24,7 +24,6 @@ public class EditEmployeeValidator implements Validator{
 	@Override
 	public void validate(Object obj, Errors errors) {
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"organization.organizationId","Organization Name should be select","Organization Name should be select");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"employeeNo","Employee Id cannot be empty","Employee Id cannot be empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"division.divisionId","Division Name should be select","Division Name should be select");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors,"timecardUser.firstName","First Name cannot be empty","First Name cannot be empty");

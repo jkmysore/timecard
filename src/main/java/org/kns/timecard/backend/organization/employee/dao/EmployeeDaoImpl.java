@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.kns.timecard.exception.DivisionNotFoundException;
 import org.kns.timecard.exception.EmployeeNotFoundException;
+import org.kns.timecard.exception.EmployeeNotFoundFilterException;
+import org.kns.timecard.backend.organization.division.model.Division;
 import org.kns.timecard.backend.organization.employee.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +33,14 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 	/**
 	 * Created By Bhagya On October 27th,2014
 	 * @param employee object
@@ -76,7 +89,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	 * 
 	 * Method For get All Employees Based On OrganizationId
 	 */
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public ArrayList<Employee> getAllEmployeesByOrganizationId(Integer organizationId,Integer page,Integer pageSize) throws EmployeeNotFoundException{
 		log.info("inside getAllDivisionsFromDB()");
 		Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Employee.class)
@@ -97,8 +110,72 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		}
 		
 		
+	}*/
+	/**
+	 * Created By bhagya On Feb 27th,2015
+	 * @param organizationId
+	 * @return division
+	 * @throws EmployeeNotFoundException 
+	 * @throws EmployeeNotFoundFilterException 
+	 * @throws Exception
+	 * 
+	 * Method to get all Employee Details
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Employee> getEmployeesBasedOnOrganizationId(Integer organizationId,Integer pageNo,Integer pageSize,String sortBy,String searchBy,Boolean ascending,String employeeType) throws EmployeeNotFoundException, EmployeeNotFoundFilterException {
+		log.info("inside getDivisionsBasedOnOrganizationId()");
+		Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Employee.class).createAlias("timecardUser", "user").createAlias("timecardUser.timeCardCredentials", "userCredentials");
+				criteria.add(Restrictions.eq("organization.organizationId", organizationId));
+		if(employeeType!=null && employeeType.contentEquals("managers")  ){
+			criteria.add(Restrictions.eq("isManager", true));
+		}
+		else if(employeeType!=null && employeeType.contentEquals("employees")){
+			criteria.add(Restrictions.eq("isManager", false));
+			
+		}
+		if (searchBy != null && !searchBy.isEmpty()) {
+			
+			Disjunction disjunction = Restrictions.disjunction();
+			disjunction.add(Restrictions.ilike("user.firstName", searchBy,
+					MatchMode.ANYWHERE));
+			disjunction.add(Restrictions.ilike("user.lastName", searchBy,
+					MatchMode.ANYWHERE));
+			disjunction.add(Restrictions.ilike("user.middleName", searchBy,
+					MatchMode.ANYWHERE));
+			disjunction.add(Restrictions.ilike("userCredentials.username", searchBy,
+					MatchMode.ANYWHERE));
+			disjunction.add(Restrictions.ilike("userCredentials.email", searchBy,
+					MatchMode.ANYWHERE));
+			criteria.add(disjunction);
+		}
+		if(null!=sortBy){
+			if(ascending){
+				criteria.addOrder(Order.asc(sortBy));
+			}
+			else{
+				criteria.addOrder(Order.desc(sortBy));
+			}				
+		}
+		
+		if(null!=pageNo){
+			criteria.setFirstResult(pageNo*pageSize);
+			criteria.setMaxResults(pageSize);
+		}	
+		
+		ArrayList<Employee> employees=(ArrayList<Employee>) criteria.list();
+		
+		if(!employees.isEmpty()){
+			return employees;
+		}
+		else if(null!=searchBy){
+			throw new EmployeeNotFoundFilterException();
+		}
+		else{	
+			throw new EmployeeNotFoundException();
+		}
+		
 	}
-	
 	/**
 	 * Created By Bhagya On October 28th,2014
 	 * @param organizationId

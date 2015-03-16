@@ -317,7 +317,7 @@ public class RegistrationController {
 					System.out.println("TO COnfiguratdion"+firstVisit);
 					map.put("firstVisit",firstVisit);
 					map.put("userId", changePassord.getUserId());
-					return "redirect:/organization/configuration.htm";
+					return "redirect:/org/configuration.htm";
 				}
 				else{					
 					return "redirect:/home.htm";

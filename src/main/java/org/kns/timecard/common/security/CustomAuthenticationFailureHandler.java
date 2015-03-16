@@ -1,8 +1,12 @@
 package org.kns.timecard.common.security;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.kns.timecard.exception.OrganizationNotActiveException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -29,20 +33,24 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		super.onAuthenticationFailure(request, response, exception);
 		String message;
 		System.out.println("Exception "+exception.getMessage()+" "+exception.getClass());
-		if(exception.getClass().isAssignableFrom(CredentialsExpiredException.class)){
+		if(exception.getMessage().trim().equalsIgnoreCase("Account Expired")){
 			message="Your Account is Expired, Please Contact Admin for further Details";
 		}		
-		else if(exception.getClass().isAssignableFrom(LockedException.class)){
+		else if(exception.getMessage().trim().equalsIgnoreCase("Account is Locked")){
 			message="Your Account is Locked, Please Contact Admin for further Details";
 		}
 		else if(exception.getClass().isAssignableFrom(DisabledException.class)){
 			message="Your Account is Disabled, Please Contact Admin for further Details";			
+		}
+		else if(exception.getMessage().trim().equalsIgnoreCase("Organization Not Found")){
+			message="Your Organization is InActive,Please Contact Admin for further Details";
 		}
 		else{
 			message="Invalid Login Credentials";
 		}		
 		request.getSession().setAttribute("error", message );       		
 	}
+	
 	
 	
 }

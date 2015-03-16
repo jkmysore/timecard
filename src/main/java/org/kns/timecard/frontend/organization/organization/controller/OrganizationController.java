@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.organization.organization.dto.TimeCardPeriodDto;
 import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationConfigDto;
+import org.kns.timecard.frontend.timecarduser.dto.TimecardUserDto;
 import org.kns.timecard.frontend.timecarduser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -135,12 +137,12 @@ public class OrganizationController {
 	 * Method to initiate Configuration set up process
 	 */
 	@RequestMapping(value="configuration.htm",method=RequestMethod.GET)
-	public String initiateOrganizationConfiguration(Map<String, Object> map,@RequestParam("userId")Integer userId, @ModelAttribute("configuration") OrganizationConfigDto configuration,
+	public String initiateOrganizationConfiguration(Map<String, Object> map,@RequestParam("userId")Integer userId,
 			@RequestParam(value="firstVisit",required=false)Boolean firstVisit){
 		log.info("inside iniitateOrganizationConfoguration()");
 		try{
-			ArrayList<TimeCardPeriodDto> timecardPeriods=this.organizationService.getTimecardPeriodsFromDB();
-			map.put("timecardPeriods", timecardPeriods);
+			OrganizationDto organizationDto=this.organizationService.getOrganizationByUserId(userId);
+			map.put("organization", organizationDto);
 			map.put("userId", userId);
 			map.put("firstVisit", firstVisit);
 			return "timecard/organization/organization/configuration";
@@ -161,18 +163,13 @@ public class OrganizationController {
 	 * Method to processSavingConfiguration information
 	 */
 	@RequestMapping(value="configuration.htm",method=RequestMethod.POST)
-	public String processSavingOrganizationConfiguration(@RequestParam(value="userId",required=false)Integer userId,@Valid @ModelAttribute("configuration") OrganizationConfigDto configuration,BindingResult validResult,
-			@RequestParam(value="firstVisit",required=false)Boolean firstVistit,Map<String, Object> map){
+	public String processSavingOrganizationConfiguration(@RequestParam(value="userId",required=false)Integer userId,@RequestParam(value="firstVisit",required=false)Boolean firstVistit,Map<String, Object> map,
+			@RequestParam(value="organizationName",required=false) String organizationName,@RequestParam(value="timecardPeriod",required=false)String timecardPeriod,@RequestParam(value="weekEndingDay",required=false) String weekEndingDay,
+			@RequestParam(value="minHoursPerWeek",required=false) String minHoursPerWeek,@RequestParam(value="maxHoursPerWeek",required=false) String maxHoursPerWeek,@RequestParam(value="whineList",required=false) String whineList
+			){
 		log.info("inside processSavingOrganizationConfiguration()");
 		try{
-			if (validResult.hasErrors()) {
-				ArrayList<TimeCardPeriodDto> timecardPeriods=this.organizationService.getTimecardPeriodsFromDB();
-				map.put("timecardPeriods", timecardPeriods);
-				map.put("userId", userId);
-				map.put("firstVisit",firstVistit);
-				return "timecard/organization/organization/configuration";
-			}
-			Integer updateResult=this.organizationService.processSavingConfigurationOfOrganization(configuration, userId);
+			Integer updateResult=this.organizationService.processSavingConfigurationOfOrganization(userId, organizationName, timecardPeriod, weekEndingDay, minHoursPerWeek, maxHoursPerWeek, whineList);
 			if(updateResult>1){
 				map.put("firstVisit", firstVistit);
 				map.put("userId", userId);

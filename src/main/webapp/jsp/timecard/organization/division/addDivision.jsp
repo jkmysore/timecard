@@ -70,22 +70,18 @@
       <div class="row">
         
         <div class="col-md-11">
-          <form:form class="form-horizontal" action=""  id="basicForm" novalidate="novalidate" commandName="divisionDto" enctype="multipart/form-data" onsubmit="return validateDivision();" >
+          <form:form class="form-horizontal" action=""  id="basicForm" novalidate="novalidate" commandName="divisionDto"  onsubmit="return validateDivision();" >
 	          <div class="panel panel-default">
 	          <div class="titleHeader">
 	              	Add Division
 	              	</div>
 	              <div class="panel-body">
 	               <div class="form-group">
-	                  <label class="col-sm-2 control-label" > Organization Name  <span class="asterisk">*</span></label>
-	                  <div class="col-sm-4">
-	                    <form:select path="organization.organizationName" required="required" class="form-control" id="organizationName">	                    
-	                    	<form:option value="">--Select--</form:option>
-	                    	<c:forEach var="organization" items="${organizations}">
-	                    		<form:option value="${organization.organizationId}" >${organization.organizationName}</form:option>
-	                    	</c:forEach>	                    
-	                    </form:select><span id="organizationName_error" style="color:red"></span>
-	                    <form:errors  id="organizationName_error" class="org_error" path="organization.organizationName" />
+	                  <label class="col-sm-2 control-label">Organization Name<span class="asterisk">*</span></label>
+	                   <div class="col-sm-4 ">
+	                   <form:input  type="text"  placeholder="Type your Organization Name..." class="form-control" path="organization.organizationName" name="organizationName" id="organizationName" value="${organization.organizationName}" readonly="true" />
+	                   <span id="organizationName_error" class="org_error"></span>
+	                   <form:errors  id="organizationName_error" class="org_error" path="organization.organizationName" />
 	                  </div>
 	                 </div>
 					

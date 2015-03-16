@@ -20,4 +20,6 @@ public interface UserService {
 	public Integer getTimecardUserCredentialsIdbyPasswordToken(String passwordToken)throws TimecardUserNotFoundException;
 	public Integer handlePasswordReset(Integer userId,String password)throws Exception;
 	public Integer performPasswordChange(ChangePasswordDto changePasswordDto)throws Exception;
+	public Integer handleFirstTimeVisitofUser(Integer userId)throws Exception;
+	
 }

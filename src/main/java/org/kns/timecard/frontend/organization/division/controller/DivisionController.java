@@ -7,15 +7,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-
-
 import org.apache.log4j.Logger;
 import org.kns.timecard.exception.DivisionNotFoundException;
+import org.kns.timecard.exception.DivisionNotFoundFilterException;
 import org.kns.timecard.exception.TimecardUserNotFoundException;
 import org.kns.timecard.frontend.organization.division.dto.DivisionDto;
 import org.kns.timecard.frontend.organization.division.service.DivisionService;
 import org.kns.timecard.frontend.organization.organization.dto.OrganizationDto;
 import org.kns.timecard.frontend.organization.organization.service.OrganizationService;
+import org.kns.timecard.frontend.utility.dto.DisplayListBeanDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -42,7 +42,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 
 
-@RequestMapping(value="/division/*")
+
 @Controller("divisionController")
 public class DivisionController {
 	
@@ -72,16 +72,15 @@ public class DivisionController {
 	 * 
 	 * Method For to initiate Add Division
 	 */
-	@RequestMapping(value="adddivision.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/adddivision.htm",method=RequestMethod.GET)
 	public String initiateAddDivision(Authentication authentication,Map<String, Object> map, @ModelAttribute("divisionDto") DivisionDto divisionDto){
 		log.info("inside initiateAddDivision()");
 		try{
 			
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			
-			map.put("organizations",organizationDtos);
+			OrganizationDto organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
+			map.put("organization",organizationDto);
 			
 			return "timecard/organization/division/addDivision";
 		}
@@ -107,27 +106,24 @@ public class DivisionController {
 	 * 
 	 * Method to Save process of adding Division.
 	 */
-	@RequestMapping(value="adddivision.htm",method=RequestMethod.POST)
+	
+	@RequestMapping(value="org/adddivision.htm",method=RequestMethod.POST)
 	public String addDivision(Map<String,Object> map,@Valid @ModelAttribute("divisionDto") DivisionDto divisionDto,BindingResult validResult,
-			RedirectAttributes redAttributes,
-			@RequestParam("organization.organizationName") Integer organizationId){
+			RedirectAttributes redAttributes){
 		log.info("inside addDivision()");
 		try{
-			
+			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+			String useremail=auth.getName();
+			OrganizationDto organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
 			if (validResult.hasErrors()) {
-				Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-				String useremail=auth.getName();
-				 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-				
-				map.put("organizations",organizationDtos);
+				map.put("organizations",organizationDto);
 				return "timecard/organization/division/addDivision";
 			}
-			Integer result=this.divisionService.savingTheAddedorUpdatedDivisionDetails(divisionDto,organizationId);
+			Integer result=this.divisionService.savingTheAddedorUpdatedDivisionDetails(divisionDto,organizationDto.getOrganizationId());
 			if(result>0){
-				String message="Division Details Added Successfully";
-				/*redAttributes.addFlashAttribute("message",
-						"Division Succesfully Added");*/
-				return "redirect:/division/divisions.htm?organizationId="+organizationId+"&addDivisionMessage="+message;
+				String status="Division Added Successfully";
+				redAttributes.addFlashAttribute("status",status);
+				return "redirect:/org/viewdivisions.htm?status="+status;
 			
 			}
 			else{
@@ -136,6 +132,7 @@ public class DivisionController {
 			
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			String message="Error While Adding Division";
 			map.put("message", message);
 			map.put("title", message);
@@ -143,160 +140,71 @@ public class DivisionController {
 		}
 		
 	}
-	/**
-	 * Created By Bhagya on October 22nd,2014
-	 * @param totalResults
-	 * @param pageSize
-	 * @return total pages needed
-	 * @throws Exception
-	 * 
-	 * Method for getting the total pages needed for results
-	 */
 	
-	private Integer getTotalPagesNeededByRangeandResults(Integer totalResults,
-			Integer pageSize) throws Exception {
-		log.info("inside getTotalPagesNeededByRangeandResults()");
-		int pagesNeeded;
-		int result = totalResults / pageSize;
-		if (totalResults % pageSize > 0) {
-			pagesNeeded = result + 1;
-		} else {
-			pagesNeeded = result;
-		}
-		return pagesNeeded;
-	}
 	
 	/**
-	 * Created By Bhagya On October 22nd,2014
-	 * @param range
-	 * @param totalResults
-	 * @param firstResult
+	 * Created By Bhagya on Feb 27th,2015
+	 * @param map,page,pagesize
 	 * @return
 	 * 
-	 * Method For Getting The Results Of Page Based On Range
-	 * 
+	 * Method For to Process the View Divisions
 	 */
 	
-	private int getResultsOfLastPageFromRangeandTotalOrders(int range,
-			int totalResults, int firstResult) {
-		log.info("inside getOrdersOfLastPageFromRangeandTotalOrders()	");
-		int lastResult = firstResult + range - 1;
-		if (lastResult > totalResults) {
-			lastResult = (totalResults % range) + firstResult - 1;
-		}
-		return lastResult;
-	}
-	
-	
-	
-	/**
-	 * Created By Bhagya On October 22nd,2014
-	 * @param authentication
-	 * @param map
-	 * @return
-	 * 
-	 * Method For Intiating The View Divisions
-	 */
-	@RequestMapping(value="viewdivisions.htm",method=RequestMethod.GET)
-	public String initiateViewDivisions(Authentication authentication,Map<String, Object> map){
-		log.info("inside initiateViewDivisions()");
-		
-		try{
-			
-			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-			String useremail=auth.getName();
-			 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			
-			map.put("organizations",organizationDtos);
-			
-			return "timecard/organization/division/viewDivisions";
-		}
-		
-		catch(TimecardUserNotFoundException e){
-			String message="User Not Found,Please Login Again to Continue..";
-			map.put("message", message);
-			map.put("title", message);
-			return "response";
-		}
-		catch(Exception e){
-			e.printStackTrace();
-			String message="Error While Initiate View Divisions";
-			map.put("message", message);
-			map.put("title", message);
-			return "error";
-		}	
-	}
-	
-	/**
-	 * Created By Bhagya on October 22nd,2014
-	 * 
-	 * @param map,page,pageSize,organizationId,divisionDto,authentication,divisionMessage,addDivisionMessage
-	 * @return
-	 * 
-	 * Method for Process Of view Divisions
-	 */
-	
-	@RequestMapping(value="divisions.htm",method=RequestMethod.GET)
-	public String viewDivisions(Map<String, Object> map ,@RequestParam(value="page",required=false,defaultValue="0")Integer page,@RequestParam(value="range",required=false,defaultValue="10") Integer pageSize,
-			@RequestParam("organizationId") Integer organizationId,@ModelAttribute("divisionDto") DivisionDto divisionDto,Authentication authentication,@RequestParam(value="divisionMessage",required=false) String divisionMessage,
-			@RequestParam(value="addDivisionMessage",required=false) String addDivisionMessage){
+	@RequestMapping(value="org/viewdivisions.htm")
+	public String viewDivisions(Map<String, Object> map,@ModelAttribute("displayListBean") DisplayListBeanDto listBeanDto,@RequestParam(value="status",required=false) String status)
+	{
 		log.info("inside viewDivisions()");
-		
-		 ArrayList<OrganizationDto> organizationDtos=null;
+		Integer organizationId = null;
 		
 		try{
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-			ArrayList<DivisionDto> departmentDtos=this.divisionService.getAllDivisionsBasedOnOrganizationId(page, pageSize, organizationId);
-			Integer totalResults=this.divisionService.getDivisionTotalResults();
-			Integer pagesNeeded=this.getTotalPagesNeededByRangeandResults(totalResults, pageSize);
-			int firstResult=pageSize*page+1;
-			int lastResult=this.getResultsOfLastPageFromRangeandTotalOrders(pageSize, totalResults, firstResult);
-			int i=pageSize*page+1;
-			map.put("organizations",organizationDtos);
-			map.put("organizationId",organizationId);
-			map.put("title", "Divisions");		
-			map.put("page", page);
-			map.put("range", pageSize);
-			map.put("end", pagesNeeded);
-			map.put("first", firstResult);
-			map.put("last", lastResult);
-			map.put("total", totalResults);	
-			map.put("departments", departmentDtos);
-			map.put("divisionMessage", divisionMessage);
-			map.put("addDivisionMessage", addDivisionMessage);
-			map.put("i", i);
-			return "timecard/organization/division/viewDivisions";
+			OrganizationDto organizationDto = this.organizationService.getOrganizationByUserEmail(useremail);
+			organizationId=organizationDto.getOrganizationId();
 			
+			if(null==listBeanDto.getSortBy()){
+				listBeanDto.setSortBy("divisionId");
+			}
+			ArrayList<DivisionDto> divisions=this.divisionService.getDivisionsBasedOnOrganizationId(organizationId, listBeanDto.getPagerDto().getPageNo(), listBeanDto.getPagerDto().getRange(),
+														listBeanDto.getSortBy(),listBeanDto.getSearchBy(),listBeanDto.getSortDirection());
+			
+			
+			Integer totalResults=this.divisionService.getDivisionTotalResults();
+			listBeanDto.getPagerDto().setTotalItems(totalResults);
+			int i=listBeanDto.getPagerDto().getFirstResult();
+			map.put("i", i);
+			map.put("status", status);
+			map.put("divisions", divisions);
+			return "timecard/organization/division/viewDivisions";
 		}
 		catch(TimecardUserNotFoundException e){
-			e.printStackTrace();
-			String message="User Not Found,Please Login Again to Continue..";
+			String message="User Not Found,Please Login Again..";
 			map.put("message", message);
 			map.put("title", message);
 			return "response";
+		}
+		catch(DivisionNotFoundFilterException e){
+			String message="No Divisions Found For Search Criteria";
+			map.put("filterMsg", message);
+			map.put("title", message);
+			return "timecard/organization/division/viewDivisions";
 		}
 		catch(DivisionNotFoundException e){
-			e.printStackTrace();
-			map.put("organizations",organizationDtos);
-			map.put("organizationId",organizationId);
-			String message = "Divisions Not Found,You Can Add Divisions";
-			map.put("message", message);
+			String message="Divisions Are Not Found,You Can Add Division";
+			map.put("msg", message);
 			map.put("title", message);
 			return "timecard/organization/division/viewDivisions";
 		}
-		
 		catch(Exception e){
 			e.printStackTrace();
-			String message = "Error While Displaying Divisions";
+			String message="Error While viewing Divisions";
 			map.put("message", message);
 			map.put("title", message);
 			return "error";
 		}
 		
+		
 	}
-	
 	
 	/**
 	 * Created By Bhagya On October 22nd,2014
@@ -305,16 +213,16 @@ public class DivisionController {
 	 * 
 	 * Method For  Initiate Edit Division
 	 */
-	@RequestMapping(value="editdivision.htm",method=RequestMethod.GET)
+	@RequestMapping(value="org/editdivision.htm",method=RequestMethod.GET)
 	public String editDivision(Map<String, Object> map,@RequestParam("divisionId") Integer divisionId,@ModelAttribute("divisionDto") DivisionDto divisionDto,Authentication authentication){
 		log.info("inside editDivision()");
-		 ArrayList<OrganizationDto> organizationDtos=null;
+		OrganizationDto organizationDto=null;
 		try{
 			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 			String useremail=auth.getName();
-			 organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
+			organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
 			DivisionDto divisiondto=this.divisionService.getDivisionDetailsByDivisionId(divisionId);
-			map.put("organizations",organizationDtos);
+			map.put("organization",organizationDto);
 			map.put("division", divisiondto);
 			return "timecard/organization/division/editDivision";
 		}
@@ -336,23 +244,24 @@ public class DivisionController {
 	 * Method To Process Edit Division
 	 */
 	
-	@RequestMapping(value="editdivision.htm",method=RequestMethod.POST)
-	public String editingTheDivisionPage(@Valid @ModelAttribute("divisionDto") DivisionDto divisionDto,BindingResult validResult,Map<String, Object> map,@RequestParam("organization.organizationName") Integer organizationId){
+	@RequestMapping(value="org/editdivision.htm",method=RequestMethod.POST)
+	public String editingTheDivisionPage(@Valid @ModelAttribute("divisionDto") DivisionDto divisionDto,BindingResult validResult,Map<String, Object> map,
+			RedirectAttributes redAttributes){
 		log.info("editingTheDivisionPage()");
 		try{
-			
+			Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+			String useremail=auth.getName();
+			OrganizationDto organizationDto=this.organizationService.getOrganizationByUserEmail(useremail);
 				if (validResult.hasErrors()) {
-					Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-					String useremail=auth.getName();
-					 ArrayList<OrganizationDto> organizationDtos=this.organizationService.getOrganizationsByAdminorManager(useremail);
-					
-					map.put("organizations",organizationDtos);
+					map.put("organizations",organizationDto);
 					return "timecard/organization/division/editDivision";
 				}
-			Integer result=this.divisionService.savingTheAddedorUpdatedDivisionDetails(divisionDto, organizationId);
+			
+			Integer result=this.divisionService.savingTheAddedorUpdatedDivisionDetails(divisionDto, organizationDto.getOrganizationId());
 			if(result>0){
-			String message="Division Details Updated Successfully";
-		return "redirect:/division/divisions.htm?organizationId="+organizationId+"&divisionMessage="+message;
+				String status="Division Updated Successfully";
+				redAttributes.addFlashAttribute("status",status);
+				return "redirect:/org/viewdivisions.htm?status="+status;
 			}
 			else{
 				throw new Exception();

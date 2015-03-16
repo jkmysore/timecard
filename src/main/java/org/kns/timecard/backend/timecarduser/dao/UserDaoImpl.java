@@ -202,6 +202,7 @@ public class UserDaoImpl implements UserDao {
 	 */	
 	public Integer saveOrUpdateTimecardUser(TimecardUser timecardUser)throws TimecardUserNotFoundException{
 		log.info("inside saveorUpdateTimecardUser()");
+		System.out.println("timecard user details at dao"+timecardUser.getFirstName()+"email" +timecardUser.getTimeCardCredentials().getEmail());
 		sessionFactory.getCurrentSession().saveOrUpdate(timecardUser);
 		sessionFactory.getCurrentSession().flush();
 		return timecardUser.getUserId();

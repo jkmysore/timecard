@@ -176,10 +176,10 @@
 						              						&nbsp;
 						              					<c:choose>
 						              						<c:when test="${org.isActive eq true }">	
-						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=false" title="Activate Organization">	<i class="fa fa-ban fa-2x"></i> </a>	
+						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=false" title="InActivate Organization">	<i class="fa fa-ban fa-2x"></i> </a>	
 						              						</c:when>
 						              						<c:otherwise>
-						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=true" title="InActivate Organization">	<i class="fa fa-check fa-2x"></i> </a>	
+						              							<a href="${pageContext.request.contextPath}/admin/changeorganization.htm?organizationId=${org.organizationId}&activate=true" title="Activate Organization">	<i class="fa fa-check fa-2x"></i> </a>	
 						              					    </c:otherwise>
 						              					  </c:choose>
 						              				</td>

@@ -23,8 +23,12 @@ public interface OrganizationService {
 	
 	public Integer createOrganization(OrganizationDto organizationDto)throws Exception;
 	public ArrayList<TimeCardPeriodDto> getTimecardPeriodsFromDB()throws Exception;
-	public Integer processSavingConfigurationOfOrganization(OrganizationConfigDto configDto,Integer userId)throws Exception;
+	public Integer processSavingConfigurationOfOrganization(Integer userId,String organizationName,String timecardPeriod,String weekEndingDay,String minHoursPerWeek,
+			String maxHoursPerWeek,String whineList)throws Exception;
 	public ArrayList<OrganizationDto> getOrganizationsByAdminorManager(String useremail) throws TimecardUserNotFoundException, OrganizationNotFoundException;
+	public Integer saveActivationDetailsOfOrganization(ArrayList<OrganizationDto> organizationDto) throws OrganizationNotFoundException,Exception;
+	public OrganizationDto getOrganizationByUserId(Integer userId)throws OrganizationNotFoundException;
+	public OrganizationDto getOrganizationByUserEmail(String userEmail)throws TimecardUserNotFoundException,OrganizationNotFoundException;
 	
 
 }

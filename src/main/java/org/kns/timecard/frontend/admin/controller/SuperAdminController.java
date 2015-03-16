@@ -258,9 +258,71 @@ public class SuperAdminController {
 		}
 	}
 	
+	/**
+	 * Created By Bhagya On Feb 24th,2015
+	 * @param organizationId
+	 * @param map
+	 * @return
+	 * 
+	 * Get Method For intiating the Organization settings page
+	 * 1.if Organization settings are already exists means,it display the settings details and an option for edit
+	 * 2.if Organization settings are not exists..u can add those settings
+	 */
+	@RequestMapping(value="orgsettings.htm",method=RequestMethod.GET)
+	public String initOrganizationSettings(@RequestParam(value="organizationId") Integer organizationId,Map<String, Object> map,
+			@ModelAttribute("organization") OrganizationDto organizationDto){
+		log.info("inside initOrganizationSettings()");
+		try{
+			organizationDto=this.superAdminService.getOrganizationByOrganizationId(organizationId);
+			map.put("organizationId", organizationId);
+			if(organizationDto.getIsLogsSaved()!=null && organizationDto.getIsLogsSaved().toString().trim().length()>0)
+			{
+				map.put("organizationDto", organizationDto);
+				return "admin/editOrgSettings";
+			}
+			else{
+				return "admin/orgSettings";
+			}
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			String message="Error While  Organization Settings";
+			map.put("message", message);
+			map.put("title", message);
+			return "error";
+		}
+	}
 	
+	/**
+	 * Created By Bhagya On Feb 24th,2015
+	 * @param organizationDto
+	 * @return
+	 *  Post Method For Saving the Details of organization Setings
+	 */
+	@RequestMapping(value="orgsettings.htm",method=RequestMethod.POST)
+	public String saveOrganizationSettings(@ModelAttribute("organization") OrganizationDto organizationDto,Map<String,Object> map){
+		log.info("inside saveOrganizationSettings()");
+		try{
+			Integer saveResult=this.superAdminService.saveOrganizationSettings(organizationDto);
+			String msg="Organization Settings Saved Successfully";
+			map.put("status", msg);
+			return "redirect:/admin/organizations.htm";
+		}
+		catch(OrganizationNotFoundException e){
+			String message="Organization Not Found";
+			map.put("message", message);
+			map.put("title", message);
+			return "admin/orgSettings";
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			String message="Error While Saving Organization Settings";
+			map.put("message", message);
+			map.put("title", message);
+			return "error";
+		}
 	
-	
-	
+	}
 	
 }
